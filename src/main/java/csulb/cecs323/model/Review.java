@@ -1,6 +1,7 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Join;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,16 +10,17 @@ import java.text.DateFormat;
 
 @Entity
 public class Review {
-    @Id @GeneratedValue
+    @Id
+    @JoinColumn
     private int recipeID;
-    @Id @GeneratedValue
+    @Id
+    @JoinColumn
     private int criticID;
     private Date dateCompleted;
     private float rating;
     private String description;
 
     @ManyToOne
-    @JoinColumn
     private Review review;
 
 

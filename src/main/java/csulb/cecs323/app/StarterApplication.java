@@ -6,12 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.Date;
 
 public class StarterApplication
 {
@@ -183,7 +186,20 @@ public class StarterApplication
 
     }
 
+    private void createReviewEntity()
+    {
+        Review rev = new Review();
+        rev.setDescription("Amazing. Very tasty!");
+        rev.setRecipeID(entityManager.find(Recipe.class,"Shawerma").);
+        Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2021-04-19");
+        rev.setDateCompleted((date);
 
+
+        this.entityManager.persist(rev);
+        LOGGER.info("Persisted to DB: " + rev);
+        this.entityManager.flush();
+        LOGGER.info("Persisted object after flush(non-null id): " + rev);
+    }
 }
 
 
