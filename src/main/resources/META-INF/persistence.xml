@@ -45,9 +45,9 @@
 			<!-- ***************************** -->
 			<!-- to load data from a SQL file. The SQL file must have one INSERT statement per line, no semicolons -->
 			<!-- pathname is relative to folder with project resources -->
-			<!--
-			<property name="javax.persistence.sql-load-script-source" value="sql/seed-data.sql" />
-			-->
+
+<!--			<property name="javax.persistence.sql-load-script-source" value="sql/seed-data.sql" />-->
+
 			<!-- ***************************** -->
 
 			<!-- ***************************** -->
