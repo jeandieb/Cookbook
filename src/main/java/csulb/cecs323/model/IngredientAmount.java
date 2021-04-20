@@ -23,9 +23,9 @@ public class IngredientAmount{
     private float amount;
     private String units;
 
-    public IngredientAmount(long ingredientId, long recipeId, float amount, String units){
-        //this.ingredientId = ingredientId;
-        //this.recipeId = recipeId;
+    public IngredientAmount(Recipe recipe, Ingredient ingredient, float amount, String units){
+        this.recipe = recipe;
+        this.ingredient = ingredient;
         this.amount = amount;
         this.units = units;
     }
@@ -49,4 +49,19 @@ public class IngredientAmount{
         this.units = units;
     }
 
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
 }
