@@ -1,6 +1,5 @@
 package csulb.cecs323.model;
 import javax.persistence.*;
-import java.io.Serializable;
 
 //@TODO have to update javadoc
 //https://en.wikibooks.org/wiki/Java_Persistence/Identity_and_Sequencing#Id_Class
