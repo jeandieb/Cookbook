@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class FoodCritic {
+public class FoodCritic{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int criticID;
