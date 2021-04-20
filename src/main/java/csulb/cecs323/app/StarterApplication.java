@@ -9,6 +9,8 @@ import javax.persistence.Persistence;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +38,11 @@ public class StarterApplication
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
+
+        tx.begin();
+        semesterProjectApplication.createChefEntity();
+        tx.commit();
+
         tx.begin();
         semesterProjectApplication.createRegionEntity();
         semesterProjectApplication.creatReligionEntity();
@@ -58,9 +65,21 @@ public class StarterApplication
         manager.persist(temp);
         tx.commit();
 
+//        tx.begin();
+//        manager.remove(manager.find(Recipe.class, (long)1));
+//        LOGGER.info("removing object from DB: ");
+//        tx.commit();
+
         tx.begin();
-        manager.remove(manager.find(Recipe.class, (long)1));
-        LOGGER.info("removing object from DB: ");
+        semesterProjectApplication.createUserEntity();
+        tx.commit();
+
+        tx.begin();
+        semesterProjectApplication.createFoodCriticEntity();
+        tx.commit();
+
+        tx.begin();
+        semesterProjectApplication.createReviewEntity();
         tx.commit();
 
 
@@ -147,12 +166,14 @@ public class StarterApplication
 
         Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
         recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
+        recipe.setChef(this.entityManager.find(Chef.class, (long)1));
         this.entityManager.persist(recipe);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
 
         Recipe recipe2 = new Recipe("hard boiled egg", "steamed eggs", Duration.ofMinutes(8).toString(), Duration.ofMinutes(5).toString(), 1, 1);
         recipe2.addStep(new Step(1, "sink eggs in water and boil them for 8 minutes", 8));
+        recipe2.setChef(this.entityManager.find(Chef.class, (long)1));
         this.entityManager.persist(recipe2);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id):  recipe2 " + recipe2);
@@ -186,20 +207,50 @@ public class StarterApplication
 
     }
 
+    private void createFoodCriticEntity()
+    {
+        FoodCritic foodCritic = new FoodCritic("jane", "doe", "JaneD", "1234", "JandD@123.com", LocalDateTime.now(),"Reddit");
+        this.entityManager.persist(foodCritic);
+        this.entityManager.flush();
+        LOGGER.info("persisting object after flush (non-null id)" + foodCritic);
+    }
+
+    private void createChefEntity()
+    {
+        Chef chef = new Chef("Gordon", "Ramsay", "GorRam", "AnIdiotSandwich", "GoldRam@xyz.com", LocalDateTime.now(), 30);
+        this.entityManager.persist(chef);
+        this.entityManager.flush();
+    }
+
     private void createReviewEntity()
     {
         Review rev = new Review();
         rev.setDescription("Amazing. Very tasty!");
-        rev.setRecipeID(entityManager.find(Recipe.class,"Shawerma").);
-        Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2021-04-19");
-        rev.setDateCompleted((date);
-
+        rev.setRating(10);
+        rev.setRecipe(entityManager.find(Recipe.class,(long)2));
+        LocalDate date = LocalDate.of(2020, 5, 19);
+        rev.setDateCompleted(date);
+        FoodCritic temp = new FoodCritic("Foo", "Bar", "Fbar", "56789", "fbar@foob.com", LocalDateTime.now(), "Facebook");
+        this.entityManager.persist(temp);
+        rev.setFoodCritic(temp);
 
         this.entityManager.persist(rev);
         LOGGER.info("Persisted to DB: " + rev);
         this.entityManager.flush();
         LOGGER.info("Persisted object after flush(non-null id): " + rev);
     }
+
+    private void createUserEntity()
+    {
+        User1 user = new User1("John", "Doe", "JDoe", "1111", "JohnDoe@xyz", LocalDateTime.now());
+
+        this.entityManager.persist(user);
+        LOGGER.info("Persisting object to DB: " + user);
+        this.entityManager.flush();
+        LOGGER.info("Persisting Object after flush (non- null id) " + user);
+    }
 }
+
+
 
 
