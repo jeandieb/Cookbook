@@ -1,7 +1,6 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +28,13 @@ public class Recipe
 
     @ManyToOne
     private Cuisine cuisine;
+
+    @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private Set<Review> reviews = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn (nullable = false)
+    private Chef chef;
 
     public Recipe(){};
 
@@ -114,4 +120,28 @@ public class Recipe
         this.cuisine = cuisine;
         cuisine.addRecipe(this);
     }
+
+    public Set<Review> getReviews() {
+        return this.reviews;
+    }
+
+    public void addReview (Review review)
+    {
+        boolean added = this.reviews.add(review);
+        if (added)
+        {
+            review.setRecipe(this);
+        }
+    }
+
+    public Chef getChef() {
+        return chef;
+    }
+
+    public void setChef(Chef chef)
+    {
+        this.chef = chef;
+        chef.addRecipe(this);
+    }
+
 }
