@@ -1,46 +1,58 @@
 package csulb.cecs323.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class FoodCritic{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int criticID;
-
+//@DiscriminatorValue(value = "FOODCRITIC")//used with SINGLE_TABLE
+public class FoodCritic extends User1
+{
     private String currentPlatform;
 
-    @OneToMany
-    private List<Review> review = new ArrayList<>();
+    //private int numOfReview;
 
-    public FoodCritic() {};
+    @OneToMany(mappedBy = "foodCritic", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private Set<Review> reviews = new HashSet<>();
 
-    public FoodCritic(int criticID, String currentPlatform, List<Review> review) {
-        this.setCriticID(criticID);
+    public FoodCritic() {}
+
+    public FoodCritic(String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg, String currentPlatform)
+    {
+        super(fn, ls, userName, pw, email, dateReg);
         this.setCurrentPlatform(currentPlatform);
-        this.setReview(review);
     }
 
-    public int getCriticID() { return criticID; }
+    public String getCurrentPlatform() {
+        return currentPlatform;
+    }
 
-    public void setCriticID(int criticID) { this.criticID = criticID; }
+    public void setCurrentPlatform(String currentPlatform) {
+        this.currentPlatform = currentPlatform;
+    }
 
-    public String getCurrentPlatform() { return currentPlatform; }
+    public Set<Review> getReview() {
+        return reviews;
+    }
 
-    public void setCurrentPlatform(String currentPlatform) { this.currentPlatform = currentPlatform; }
 
-    public List<Review> getReview() { return review; }
-
-    public void setReview(List<Review> review) { this.review = review; }
+    public void addReview(Review review) {
+        boolean added = this.reviews.add(review);
+        if (added) {
+            review.setFoodCritic(this);
+        }
+    }
 
     @Override
     public String toString() {
         return "FoodCritic{" +
-                "criticID=" + criticID +
                 ", currentPlatform='" + currentPlatform + '\'' +
-                ", review=" + review +
+                ", review=" + reviews +
                 '}';
+
     }
 }
