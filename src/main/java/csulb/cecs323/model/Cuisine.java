@@ -1,15 +1,5 @@
 package csulb.cecs323.model;
 
-//enum CuisineRegion
-//{
-//    AFRICAN, AMERICANS, ASIAN, EUROPEAN, OCEANIC
-//}
-//
-//enum CuisineReligion
-//{
-//    //couldn't find a list ... will keep looking
-//}
-
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -33,6 +23,9 @@ public class Cuisine
 
     @ManyToMany(mappedBy = "cuisines")
     private Set<Ingredient> ingredients = new HashSet<>();
+
+    @ManyToMany(mappedBy = "cuisines")
+    private Set<Chef> chefs = new HashSet<>();
 
     @OneToMany(mappedBy = "cuisine", orphanRemoval = false)
     private Set<Recipe> recipes = new HashSet<>();
@@ -87,6 +80,18 @@ public class Cuisine
             recipe.setCuisine(this);
         }
     }
+
+
+    public Set<Chef> getChefs() {return chefs;}
+
+
+    public void addChef(Chef chef)
+    {
+        boolean added = chefs.add(chef);
+        if (added)
+            chef.addCuisine(this);
+    }
+
 
     @Override
     public String toString() {
