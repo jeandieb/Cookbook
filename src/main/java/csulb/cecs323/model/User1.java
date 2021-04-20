@@ -4,11 +4,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING) //used for SINGLE_TABLE
+//@Table(name = "USER") //USER is a SQL KEYWORD!!
 @Entity
-@Inheritance
-@DiscriminatorColumn(name = "USER_TYPE")
-@Table(name = "USER")
-public class User implements Serializable
+public class User1 //implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +27,9 @@ public class User implements Serializable
 
     private LocalDateTime dateRegistered;
 
-    public User() {};
+    public User1() {}
 
-    public User (String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg)
+    public User1 (String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg)
     {
         setFirstName(fn);
         setLastName(ls);
@@ -84,5 +85,9 @@ public class User implements Serializable
 
     public void setDateRegistered(LocalDateTime dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public long getId() {
+        return Id;
     }
 }

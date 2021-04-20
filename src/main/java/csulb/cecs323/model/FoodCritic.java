@@ -4,21 +4,26 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@DiscriminatorValue("FOODCRITIC")
-public class FoodCritic extends User
+//@DiscriminatorValue(value = "FOODCRITIC")//used with SINGLE_TABLE
+public class FoodCritic extends User1
 {
-    String currentPlatform;
+    private String currentPlatform;
+
+    //private int numOfReview;
 
     @OneToMany(mappedBy = "foodCritic", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
 
-    public FoodCritic() {};
+    public FoodCritic() {}
 
-    public FoodCritic(String currentPlatform) {
+    public FoodCritic(String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg, String currentPlatform)
+    {
+        super(fn, ls, userName, pw, email, dateReg);
         this.setCurrentPlatform(currentPlatform);
     }
 

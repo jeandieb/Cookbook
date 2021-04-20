@@ -29,8 +29,12 @@ public class Recipe
     @ManyToOne
     private Cuisine cuisine;
 
-    @OneToMany (mappedBy = "recipe")
+    @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn (nullable = false)
+    private Chef chef;
 
     public Recipe(){};
 
@@ -128,6 +132,16 @@ public class Recipe
         {
             review.setRecipe(this);
         }
+    }
+
+    public Chef getChef() {
+        return chef;
+    }
+
+    public void setChef(Chef chef)
+    {
+        this.chef = chef;
+        chef.addRecipe(this);
     }
 
 }

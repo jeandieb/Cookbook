@@ -4,6 +4,7 @@ import jdk.management.jfr.RecordingInfo;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Date;
@@ -16,21 +17,23 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
 
-    private Date dateCompleted;
+    private LocalDate dateCompleted;
     private float rating;
     private String description;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Recipe recipe;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn (nullable = false)
     private FoodCritic foodCritic;
 
 
     public Review (){};
 
-    public Review(FoodCritic criticID, Date dateCompleted, float rating, String description)
+    public Review(FoodCritic criticID, LocalDate dateCompleted, float rating, String description)
     {
         this.foodCritic = criticID;
         this.dateCompleted = dateCompleted;
@@ -39,9 +42,9 @@ public class Review {
     }
 
 
-    public Date getDateCompleted() { return dateCompleted; }
+    public LocalDate getDateCompleted() { return dateCompleted; }
 
-    public void setDateCompleted(Date dateCompleted) { this.dateCompleted = dateCompleted; }
+    public void setDateCompleted(LocalDate dateCompleted) { this.dateCompleted = dateCompleted; }
 
     public float getRating() { return rating; }
 
@@ -51,7 +54,7 @@ public class Review {
 
     public void setDescription(String description) { this.description = description; }
 
-    public Recipe getReview() { return recipe; }
+    public Recipe getRecipe() { return recipe; }
 
     public void setRecipe(Recipe recipe) { this.recipe = recipe; }
 
@@ -68,10 +71,9 @@ public class Review {
 
     @Override
     public String toString() {
-        DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-        String strDate = df.format(dateCompleted);
-        return String.format(" dateCompleted = %s, rating = %s, description = %s]",
-               strDate, rating, description);
+       // DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+        //String strDate = df.format(dateCompleted);
+        return String.format("rating = %s, description = %s]", rating, description);
     }
 }
 

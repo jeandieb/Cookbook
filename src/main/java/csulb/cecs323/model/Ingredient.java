@@ -2,6 +2,7 @@ package csulb.cecs323.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Ingredient
@@ -22,7 +23,7 @@ public class Ingredient
             name = "INGREDIENT_CUISINE",
             joinColumns = @JoinColumn(name = "ingredientID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "cuisineID", referencedColumnName = "Id"))
-    private List<Cuisine> cuisines;
+    private Set<Cuisine> cuisines;
 
 
     public Ingredient() {};
@@ -53,7 +54,7 @@ public class Ingredient
         this.description = description;
     }
 
-    public List<Cuisine> getCuisines()
+    public Set<Cuisine> getCuisines()
     {
         return cuisines;
     }
