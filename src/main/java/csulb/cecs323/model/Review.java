@@ -1,8 +1,10 @@
 package csulb.cecs323.model;
 
+import jdk.management.jfr.RecordingInfo;
+
 import javax.persistence.*;
-import javax.persistence.criteria.Join;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Date;
@@ -10,48 +12,39 @@ import java.text.DateFormat;
 
 @Entity
 public class Review {
+
     @Id
-    @JoinColumn
-    private int recipeID;
-    @Id
-    @JoinColumn
-    private int criticID;
-    private Date dateCompleted;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long Id;
+
+    private LocalDate dateCompleted;
     private float rating;
     private String description;
 
     @ManyToOne
-    private Review review;
+    @JoinColumn(nullable = false)
+    private Recipe recipe;
 
 
-    @OneToMany(mappedBy = "review")
-    private Set<Review> reviews;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn (nullable = false)
+    private FoodCritic foodCritic;
 
 
-    public Review() {
-        reviews = new HashSet<>();
-    }
+    public Review (){};
 
-    public Review(int recipeID, int criticID, Date dateCompleted, float rating, String description) {
-        this.recipeID = recipeID;
-        this.criticID = criticID;
+    public Review(FoodCritic criticID, LocalDate dateCompleted, float rating, String description)
+    {
+        this.foodCritic = criticID;
         this.dateCompleted = dateCompleted;
         this.rating = rating;
         this.description = description;
-        reviews = new HashSet<>();
     }
 
-    public int getRecipeID() { return recipeID; }
 
-    public void setRecipeID(int recipeID) { this.recipeID = recipeID; }
+    public LocalDate getDateCompleted() { return dateCompleted; }
 
-    public int getCriticID() { return criticID; }
-
-    public void setCriticID(int criticID) { this.criticID = criticID; }
-
-    public Date getDateCompleted() { return dateCompleted; }
-
-    public void setDateCompleted(Date dateCompleted) { this.dateCompleted = dateCompleted; }
+    public void setDateCompleted(LocalDate dateCompleted) { this.dateCompleted = dateCompleted; }
 
     public float getRating() { return rating; }
 
@@ -61,20 +54,26 @@ public class Review {
 
     public void setDescription(String description) { this.description = description; }
 
-    public Review getReview() { return review; }
+    public Recipe getRecipe() { return recipe; }
 
-    public void setReview(Review review) { this.review = review; }
+    public void setRecipe(Recipe recipe) { this.recipe = recipe; }
 
-    public Set<Review> getReviews() { return reviews; }
+    public FoodCritic getFoodCritic()
+    {
+        return this.foodCritic;
+    }
 
-    public void setReviews(Set<Review> reviews) { this.reviews = reviews; }
+    public void setFoodCritic(FoodCritic foodCritic)
+    {
+        this.foodCritic = foodCritic;
+        foodCritic.addReview(this);
+    }
 
     @Override
     public String toString() {
-        DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-        String strDate = df.format(dateCompleted);
-        return String.format("Review[recipeID = %d, criticID= %d, dateCompleted = %s, rating = %s, description = %s]",
-                recipeID, criticID, strDate, rating, description);
+       // DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+        //String strDate = df.format(dateCompleted);
+        return String.format("rating = %s, description = %s]", rating, description);
     }
 }
 
