@@ -35,7 +35,7 @@ public class StarterApplication
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
-
+/*
         tx.begin();
         semesterProjectApplication.createChefEntity();
         tx.commit();
@@ -44,15 +44,19 @@ public class StarterApplication
         semesterProjectApplication.createRegionEntity();
         semesterProjectApplication.creatReligionEntity();
         semesterProjectApplication.createTypeEntity();
+        tx.commit();
+
+
+        tx.begin();
+        semesterProjectApplication.createIngredientEntity();
+        tx.commit();
+
+        tx.begin();
         semesterProjectApplication.createRecipeEntity();
         tx.commit();
 
         tx.begin();
         semesterProjectApplication.createCuisineEntity();
-        tx.commit();
-
-        tx.begin();
-        semesterProjectApplication.createIngredientEntity();
         tx.commit();
 
         tx.begin();
@@ -78,8 +82,42 @@ public class StarterApplication
         tx.begin();
         semesterProjectApplication.createReviewEntity();
         tx.commit();
+*/
+        //testing Ingredient amount
+        tx.begin();
+        Chef chef = new Chef("fname", "lname", "username", "password", "email@mail.com", LocalDateTime.now(), 15);
+        manager.persist(chef);
+        manager.flush();
+        tx.commit();
 
+        tx.begin();
+        Ingredient ingredient = new Ingredient("Ketchup", new Type("table condiment"), "a sweet and tangy condiment made from tomatoes, sugar, and vinegar, with seasonings and spices.");
+        manager.persist(ingredient);
+        manager.flush();
 
+        Ingredient ingredient2 = new Ingredient("Ketchup2", new Type("table condiment2"), "a sweet and tangy condiment made from tomatoes, sugar, and vinegar, with seasonings and spices.");
+        manager.persist(ingredient2);
+        manager.flush();
+        tx.commit();
+
+        tx.begin();
+        Recipe recipe = new Recipe("Burger", "Good old Hamburger", Duration.ofMinutes(30).toString(), Duration.ofMinutes(15).toString(), 7, 2);
+        recipe.addIngredient(ingredient2, (float) 1, "tbsp");
+        recipe.setChef(chef);
+        manager.persist(recipe);
+        manager.flush();
+        tx.commit();
+
+        tx.begin();
+        RecipeIngredient ri = new RecipeIngredient();
+        ri.setRecipeId((long)1);
+        ri.setIngredientId((long)1);
+        ri.setIngredient(ingredient);
+        ri.setRecipe(recipe);
+        ri.setUnits("tbsp");
+        ri.setAmount((float) 2.2);
+        manager.persist(ri);
+        tx.commit();
     }
 
     //populate Region
@@ -164,6 +202,7 @@ public class StarterApplication
         Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
         recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
         recipe.setChef(this.entityManager.find(Chef.class, (long)1));
+        recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
         this.entityManager.persist(recipe);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);

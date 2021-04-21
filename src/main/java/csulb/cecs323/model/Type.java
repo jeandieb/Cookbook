@@ -1,10 +1,13 @@
 // this is a look-up table for ingredients' types
 package csulb.cecs323.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Type
@@ -12,10 +15,10 @@ public class Type
     @Id
     private String name;
 
-    @OneToMany(mappedBy = "type")
-    private List<Ingredient> ingredients;
+    @OneToMany(mappedBy = "type", cascade = CascadeType.PERSIST)
+    private Set<Ingredient> ingredients = new HashSet<>();
 
-    public Type() {};
+    public Type() {}
 
     public Type(String na)
     {
@@ -31,7 +34,7 @@ public class Type
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public Set<Ingredient> getIngredients() {
         return ingredients;
     }
 

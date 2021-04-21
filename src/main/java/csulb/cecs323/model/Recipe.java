@@ -32,11 +32,14 @@ public class Recipe
     @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn (nullable = false)
     private Chef chef;
 
-    public Recipe(){};
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    private Set<RecipeIngredient> ingredients = new HashSet<>();
+
+    public Recipe(){}
 
     public Recipe(String na, String desc, String prepT, String cookT, int difficultyRating, int numberOfServings)
     {
@@ -142,6 +145,20 @@ public class Recipe
     {
         this.chef = chef;
         chef.addRecipe(this);
+    }
+
+    public void addIngredient(Ingredient ingredient, float amount, String units)
+    {
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setAmount(amount);
+        recipeIngredient.setUnits(units);
+        recipeIngredient.setRecipe(this);
+        recipeIngredient.setIngredientId(ingredient.getId());
+        recipeIngredient.setRecipeId(this.Id);
+
+        this.ingredients.add(recipeIngredient);
+        ingredient.getRecipes().add(recipeIngredient);
     }
 
 }
