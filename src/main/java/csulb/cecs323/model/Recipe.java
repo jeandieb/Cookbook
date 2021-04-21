@@ -24,8 +24,10 @@ public class Recipe
 
     private int numberOfServings;
 
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recipe")//, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Step> steps = new HashSet<>();
+
+    private Set<IngredientAmount> ingredients = new HashSet<>();
 
     @ManyToOne
     private Cuisine cuisine;
@@ -95,6 +97,11 @@ public class Recipe
         return this.steps;
     }
 
+    public void addIngredient(Ingredient ingredient, int amount, String units){
+        IngredientAmount newIngr = new IngredientAmount(this, ingredient, amount, units);
+        this.ingredients.add(newIngr);
+    }
+
     public void addStep(Step step)
     {
         boolean added = this.steps.add(step);
@@ -113,5 +120,22 @@ public class Recipe
     {
         this.cuisine = cuisine;
         cuisine.addRecipe(this);
+    }
+
+    @Override
+    public String toString(){
+        String nameTimeDescr = String.format("Recipe: %s \nPrep Time: %s \nCook Time: %s \nDescription: %s", this.name, this.prepTime, this.cookTime, this.description); 
+        String allIngr = "\nIngredients:  ";
+        for(IngredientAmount ingr: this.ingredients){
+            allIngr += ingr.toString();
+        }
+        nameTimeDescr += allIngr;
+        String allSteps = "\nSteps:\n"; 
+        for(Step step : this.steps){
+            allSteps += step.toString();
+        }
+        nameTimeDescr += allSteps; 
+        return nameTimeDescr;
+        
     }
 }

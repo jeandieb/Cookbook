@@ -63,4 +63,10 @@ public class Step
         this.recipe = recipe;
         recipe.addStep(this);
     }
+
+    @Override 
+    public String toString(){
+        String str = String.format("%f. Time: %s \n %s", this.orderNumber, this.time, this.description);
+        return str; 
+    }
 }

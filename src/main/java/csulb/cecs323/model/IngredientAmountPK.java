@@ -7,7 +7,6 @@ import java.util.Objects;
 
 @Embeddable
 public class IngredientAmountPK implements Serializable {
-
     @Basic
     private long recipeId;
 

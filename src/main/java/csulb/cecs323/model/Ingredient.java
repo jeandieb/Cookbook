@@ -25,6 +25,12 @@ public class Ingredient
     private List<Cuisine> cuisines;
 
 
+    //added by Nikki for debugging 
+    public Ingredient(String name, Type type, String description){
+        this.name = name; 
+        this.type = type; 
+        this.description = description; 
+    }
     public Ingredient() {};
     //got rid of the constructor to make the user use the .addIngredient method from type
     //this way we make sure that the List of Ingredients in type is modified everytime we add a new Ingredient

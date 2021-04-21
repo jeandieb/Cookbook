@@ -1,5 +1,6 @@
 package csulb.cecs323.model;
 import javax.persistence.*;
+import java.io.Serializable;
 
 //@TODO have to update javadoc
 //https://en.wikibooks.org/wiki/Java_Persistence/Identity_and_Sequencing#Id_Class
@@ -9,13 +10,13 @@ import javax.persistence.*;
 @IdClass(IngredientAmountPK.class)
 public class IngredientAmount{
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @Id
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", referencedColumnName = "Id")
     private Recipe recipe;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @Id
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_id", referencedColumnName = "ID")
     private Ingredient ingredient;
 
@@ -28,6 +29,8 @@ public class IngredientAmount{
         this.amount = amount;
         this.units = units;
     }
+
+  
 
     public IngredientAmount(){}
 
@@ -63,4 +66,11 @@ public class IngredientAmount{
     public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
     }
+
+    @Override
+    public String toString(){
+        String str = String.format("%s %f %s", this.getIngredient().getName(), this.getAmount(), this.getUnits());
+        return str;
+    }
+    
 }

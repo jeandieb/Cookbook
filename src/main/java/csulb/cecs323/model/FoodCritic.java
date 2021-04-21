@@ -35,6 +35,11 @@ public class FoodCritic {
 
     public void setReview(List<Review> review) { this.review = review; }
 
+    public void addReview(Review r ){
+        this.review.add(r);
+    }
+
+
     @Override
     public String toString() {
         return "FoodCritic{" +
