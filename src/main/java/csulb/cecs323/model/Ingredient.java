@@ -1,10 +1,12 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Ingredient
+public class Ingredient implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,10 @@ public class Ingredient
     //got rid of the constructor to make the user use the .addIngredient method from type
     //this way we make sure that the List of Ingredients in type is modified everytime we add a new Ingredient
 
+
+    public long getId(){
+        return this.ID;
+    }
     public String getName() {
         return name;
     }

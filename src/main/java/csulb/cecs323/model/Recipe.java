@@ -1,12 +1,14 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Recipe
+public class Recipe implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +44,10 @@ public class Recipe
         this.setCookTime(cookT);
         this.setDifficultyRating(difficultyRating);
         this.setNumberOfServings(numberOfServings);
+    }
+
+    public long getId(){
+        return this.Id;
     }
 
     public String getName() {
