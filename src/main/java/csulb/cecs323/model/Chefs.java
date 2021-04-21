@@ -8,6 +8,9 @@ public class Chefs {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long chef_id;
 
+    //TEMPORARY
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private int years_of_experience;
 

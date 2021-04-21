@@ -8,8 +8,6 @@ public class Experienced_Cuisine_Chefs {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long chef_id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long cuisine_id;
 
     public long getChef_id() {

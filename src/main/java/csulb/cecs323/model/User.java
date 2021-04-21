@@ -1,6 +1,8 @@
 package csulb.cecs323.model;
 import javax.persistence.*;
 
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "USERS")
 @Entity
 public class User {
     @Id
@@ -75,9 +77,9 @@ public class User {
 
     @Override
     public String toString(){
-        return "User ID: " + this.getUser_id() + "First Name: " + this.first_name + "Last Name: " + this.last_name
-                + "User Name: " + this.user_name + "Password: " + this.password + "Email: " + this.email
-                + "Date Registered: " + this.date_registered;
+        return "User ID: " + this.getUser_id() + " First Name: " + this.first_name + " Last Name: " + this.last_name
+                + " User Name: " + this.user_name + "Password: " + this.password + " Email: " + this.email
+                + " Date Registered: " + this.date_registered;
     }
 
 }
