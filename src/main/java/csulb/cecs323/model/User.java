@@ -1,7 +1,7 @@
 package csulb.cecs323.model;
 import javax.persistence.*;
 
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "USERS")
 @Entity
 public class User {

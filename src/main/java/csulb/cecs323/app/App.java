@@ -1,9 +1,6 @@
 package csulb.cecs323.app;
 import csulb.cecs323.model.*;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.logging.Logger;
 
@@ -23,7 +20,7 @@ public class App {
 
 
     public static void main(String[] args){
-        LOGGER.fine("Creating user entity");
+        LOGGER.fine("Creating entity");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("starter_unit");
         EntityManager manager = factory.createEntityManager();
         App application = new App(manager);
@@ -33,6 +30,10 @@ public class App {
 
         tx.begin();
         application.userEntity();
+        tx.commit();
+
+        tx.begin();
+        application.chefEntity();
         tx.commit();
 
         LOGGER.fine("End of Transaction");
@@ -48,5 +49,13 @@ public class App {
         LOGGER.info("Persisting object to DB: " + john);
         this.entityManager.flush();
         LOGGER.info("Persisting Object after flush (non- null id) " + john);
+    }
+
+    private void chefEntity(){
+        Chefs chef = new Chefs(5);
+        this.entityManager.persist(chef);
+        LOGGER.info("Persisting object to DB: " + chef);
+        this.entityManager.flush();
+        LOGGER.info("Persisting Object after flush (non- null id) " + chef);
     }
 }
