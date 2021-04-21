@@ -7,10 +7,9 @@ import java.util.Set;
 
 @Entity
 //@DiscriminatorValue("CHEF") //used with SINGLE_TABLE
-public class Chef extends User1
+@Table(name = "CHEFS")
+public class Chef extends User
 {
-    private long ChefId = getId();
-
     private int yearsOfExperience;
 
     @OneToMany(mappedBy = "chef")
@@ -18,9 +17,10 @@ public class Chef extends User1
 
     @ManyToMany
     @JoinTable(
-            name = "CHEF_CUISINE",
-            joinColumns = @JoinColumn(name = "ChefId", referencedColumnName = "ChefId"),
-            inverseJoinColumns = @JoinColumn(name = "CuisineId", referencedColumnName = "Id"))
+            name = "CHEF_CUISINE"//,
+         //   joinColumns = @JoinColumn(name = "ChefId", referencedColumnName = "ChefId"),
+           // inverseJoinColumns = @JoinColumn(name = "CuisineId", referencedColumnName = "Id")
+    )
     private Set<Cuisine> cuisines = new HashSet<>();
 
     public Chef() {}
