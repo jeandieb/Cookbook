@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 //@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING) //used for SINGLE_TABLE
-//@Table(name = "USER") //USER is a SQL KEYWORD!!
+@Table(name = "USERS") //USER is a SQL KEYWORD!!
 @Entity
-public class User1 //implements Serializable
+public class User //implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,9 @@ public class User1 //implements Serializable
 
     private LocalDateTime dateRegistered;
 
-    public User1() {}
+    public User() {}
 
-    public User1 (String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg)
+    public User(String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg)
     {
         setFirstName(fn);
         setLastName(ls);

@@ -7,10 +7,8 @@ import java.util.Set;
 
 @Entity
 //@DiscriminatorValue("CHEF") //used with SINGLE_TABLE
-public class Chef extends User1
+public class Chef extends User
 {
-    private long ChefId = getId();
-
     private int yearsOfExperience;
 
     @OneToMany(mappedBy = "chef")

@@ -6,8 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.Date;
 
 public class StarterApplication
 {
@@ -242,7 +239,7 @@ public class StarterApplication
 
     private void createUserEntity()
     {
-        User1 user = new User1("John", "Doe", "JDoe", "1111", "JohnDoe@xyz", LocalDateTime.now());
+        User user = new User("John", "Doe", "JDoe", "1111", "JohnDoe@xyz", LocalDateTime.now());
 
         this.entityManager.persist(user);
         LOGGER.info("Persisting object to DB: " + user);
