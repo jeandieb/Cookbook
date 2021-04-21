@@ -15,10 +15,12 @@ public class FoodCritic extends User
 {
     private String currentPlatform;
 
-    //private int numOfReview;
 
     @OneToMany(mappedBy = "foodCritic", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
+
+    private int numberOfReview = reviews.size();
+
 
     public FoodCritic() {}
 
@@ -41,12 +43,18 @@ public class FoodCritic extends User
     }
 
 
+    public int getNumberOfReview()
+    {
+        return numberOfReview;
+    }
+
     public void addReview(Review review) {
         boolean added = this.reviews.add(review);
         if (added) {
             review.setFoodCritic(this);
         }
     }
+
 
     @Override
     public String toString() {

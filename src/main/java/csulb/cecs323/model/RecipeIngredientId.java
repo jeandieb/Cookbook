@@ -19,6 +19,24 @@ public class RecipeIngredientId implements Serializable
         this.ingredientId = ingredientId;
     }
 
+    public RecipeIngredientId() {}
+
+    public long getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(long recipeId) {
+        this.recipeId = recipeId;
+    }
+
+    public long getIngredientId() {
+        return ingredientId;
+    }
+
+    public void setIngredientId(long ingredientId) {
+        this.ingredientId = ingredientId;
+    }
+
     @Override
     public boolean equals(Object object)
     {
