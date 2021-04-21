@@ -30,8 +30,15 @@ public class Review {
     @JoinColumn (nullable = false)
     private FoodCritic foodCritic;
 
+    @OneToOne
+    @JoinColumn(name = "PREVIOUSREVIEW")
+    private Review previousReview;
 
-    public Review (){};
+    @OneToOne(mappedBy = "previousReview")
+    @JoinColumn(name = "RECENTREVIEW")
+    private Review recentReview;
+
+    public Review (){}
 
     public Review(FoodCritic criticID, LocalDate dateCompleted, float rating, String description)
     {
@@ -69,11 +76,36 @@ public class Review {
         foodCritic.addReview(this);
     }
 
+    public Review getPreviousReview()
+    {
+        return previousReview;
+    }
+
+    public void setPreviousReview(Review previousReview)
+    {
+        this.previousReview = previousReview;
+        previousReview.setRecentReview(this);
+    }
+
+    public Review getRecentReview()
+    {
+        return recentReview;
+    }
+
+    public void setRecentReview(Review recentReview)
+    {
+        this.recentReview = recentReview;
+        recentReview.setPreviousReview(this);
+    }
+
     @Override
     public String toString() {
-       // DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-        //String strDate = df.format(dateCompleted);
-        return String.format("rating = %s, description = %s]", rating, description);
+        return "Review{" +
+                "Id=" + Id +
+                ", dateCompleted=" + dateCompleted +
+                ", rating=" + rating +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
 
