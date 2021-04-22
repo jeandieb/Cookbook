@@ -12,9 +12,11 @@ import java.util.Set;
 @Table(name = "REGIONS")
 public class Region
 {
+    /** The name of a region for a specific cuisine. */
     @Id
     private String name;
 
+    /** The list of cuisines that pertains to a region. */
     @OneToMany(mappedBy = "region")
     private Set<Cuisine> cuisines = new HashSet<>();
 
@@ -37,6 +39,10 @@ public class Region
         return cuisines;
     }
 
+    /**
+     * Adds an cuisine to a set of cuisines that pertains to a specific region
+     * @param cuisine   An cuisine object that pertains to a certain region
+     */
     public void addCuisine(Cuisine cuisine) {
         boolean added = this.cuisines.add(cuisine);
         if (added)

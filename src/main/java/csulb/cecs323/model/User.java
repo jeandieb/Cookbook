@@ -17,24 +17,32 @@ public class User implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
 
+    /** The first name of the user. */
     private String firstName;
 
+    /** The last name of the user. */
     private String lastName;
 
+    /** The username that a user wants to go by. */
     private String userName;
 
+    /** The the password a user registered with. */
     private String password;
 
+    /** The the email of the user which can be used to contact. */
     private String email;
 
+    /** The timestamp of when a user registered. */
     private LocalDateTime dateRegistered;
 
+    /** A set of followers the current user has. */
     @ManyToMany
     @JoinTable(
             name = "FOLLOWER_FOLLOWING"
     )
     private Set<User> followers = new HashSet<>();
 
+    /** A set of users the current user is following. */
     @ManyToMany(mappedBy = "followers")
     private Set<User> followings = new HashSet<>();
 
@@ -106,6 +114,10 @@ public class User implements Serializable
         return followers;
     }
 
+    /**
+     * Adds a user to a list of followers for a specific user
+     * @param follower   A user the follows another user
+     */
     public void addFollower(User follower)
     {
         boolean added = this.followers.add(follower);
@@ -115,11 +127,16 @@ public class User implements Serializable
         }
     }
 
+
     public Set<User> getFollowings() {
         return followings;
     }
 
-    //follows
+
+    /**
+     * Adds a user that the current user wants to follow
+     * @param following   The user that the current wants to follow
+     */
     public void addFollowing(User following) {
         boolean added = this.followings.add(following);
         if(added)

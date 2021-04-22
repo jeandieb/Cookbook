@@ -10,9 +10,11 @@ import java.util.Set;
 @Table(name = "TYPES")
 public class Type
 {
+    /** The name of the type of ingredient that will be used for recipes. */
     @Id
     private String name;
 
+    /** The name of the type of ingredient that will be used for recipes. */
     @OneToMany(mappedBy = "type", cascade = CascadeType.PERSIST)
     private Set<Ingredient> ingredients = new HashSet<>();
 
@@ -36,6 +38,10 @@ public class Type
         return ingredients;
     }
 
+    /**
+     * Adds an ingredient to a set of ingredients
+     * @param ingredient   An ingredient object that is used for recipes.
+     */
     public void addIngredient(Ingredient ingredient) {
         boolean added = this.ingredients.add(ingredient);
         if (added)
