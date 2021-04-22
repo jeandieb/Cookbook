@@ -4,6 +4,10 @@ package csulb.cecs323.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "STEPS")
+/**
+ * Step is the direction that the recipe needs for it to be completed
+ */
 public class Step
 {
     @Id
@@ -18,10 +22,22 @@ public class Step
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    /**
+     * Connects Steps to Recipe
+     */
     private Recipe recipe;
 
+    /**
+     * Empty constructor for Step
+     */
     public Step(){};
 
+    /**
+     * Constructor for creating a Step
+     * @param orderNumber step number
+     * @param description what to do during step
+     * @param time duration needed for step
+     */
     public Step(int orderNumber, String description, int time)
     {
         this.setOrderNumber(orderNumber);

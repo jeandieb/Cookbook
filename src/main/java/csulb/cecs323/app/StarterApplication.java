@@ -6,15 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.Date;
 
 public class StarterApplication
 {
@@ -27,8 +26,7 @@ public class StarterApplication
         this.entityManager = manager;
     }
 
-    public static void main(String [] args)
-    {
+    public static void main(String [] args) {
         LOGGER.fine("Creating EntityManagerFactory and EntityManager");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("starter_unit");
         EntityManager manager = factory.createEntityManager();
@@ -36,44 +34,172 @@ public class StarterApplication
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
-        tx.begin();
-        semesterProjectApplication.createRegionEntity();
-        semesterProjectApplication.creatReligionEntity();
-        semesterProjectApplication.createTypeEntity();
-        semesterProjectApplication.createRecipeEntity();
-        tx.commit();
 
-        tx.begin();
-        semesterProjectApplication.createCuisineEntity();
-        tx.commit();
-
+        //create ingedients
         tx.begin();
         semesterProjectApplication.createIngredientEntity();
         tx.commit();
 
+        //create cuisines
         tx.begin();
-        Cuisine temp = manager.find(Cuisine.class, (long) 1.0);
-        System.out.println("here " + temp);
-        temp.addIngredients(manager.find(Ingredient.class, (long) 1.0));
-        manager.persist(temp);
+        semesterProjectApplication.createCuisineEntity();
         tx.commit();
 
+        //create users
         tx.begin();
-        manager.remove(manager.find(Recipe.class, (long)1));
-        LOGGER.info("removing object from DB: ");
+        semesterProjectApplication.createUserEntity();
         tx.commit();
 
+        //create chefs and add  followers
+        tx.begin();
+        semesterProjectApplication.createChefEntity();
+        tx.commit();
+
+        //create a food critic and add followers
+        tx.begin();
+        semesterProjectApplication.createFoodCriticEntity();
+        tx.commit();
+
+
+        //create recipe
+        tx.begin();
+        semesterProjectApplication.createRecipeEntity();
+        tx.commit();
+
+        //create Steps
+        tx.begin();
+        semesterProjectApplication.createStepEntity();
+        tx.commit();
 
     }
 
-    //populate Region
+    private void createIngredientEntity()
+    {
+        List<Ingredient> ingredients = new ArrayList<>();
+        Ingredient ingredient = new Ingredient("Salt", entityManager.find(Type.class, "Spice"), "A mineral composed primarily of sodium chloride (NaCl), " +
+                " and one of the oldest and most ubiquitous food seasonings," +
+                " and salting is an important method of food preservation.");
+        ingredients.add(ingredient);
+
+        Ingredient ingredient2 = new Ingredient("Black Pepper", entityManager.find(Type.class, "Spice"), "was historically both a seasoning and a traditional medicine. " +
+                " Pepper appears in the Buddhist Samaññaphala Sutta, chapter five, as one of the few medicines" +
+                " a monk is allowed to carry.");
+        ingredients.add(ingredient2);
+
+        Ingredient ingredient3 = new Ingredient("Garlic", entityManager.find(Type.class, "Flavor Agent"), " is most often used as a flavoring agent but can also. " +
+                " be eaten as a vegetable. It is used to flavor many foods, " +
+                " such as salad dressings, vinaigrettes, marinades, sauces, vegetables, meats, soups, and stews.");
+        ingredients.add(ingredient3);
+
+        for(Ingredient loopIngredient : ingredients) {
+            this.entityManager.persist(loopIngredient);
+            LOGGER.info("Persisting Into DB: " + loopIngredient);
+            this.entityManager.flush();
+            LOGGER.info("Persisted object after flush(non-null id): " + loopIngredient);
+        }
+    }
+
+    private void createCuisineEntity()
+    {
+        List<Cuisine> cuisines = new ArrayList<>();
+        Cuisine cuisine = new Cuisine("Italian", entityManager.find(Region.class, "European"), entityManager.find(Religion.class, "None"), entityManager.find(Ingredient.class, (long) 3));
+        cuisines.add(cuisine);
+
+        Cuisine cuisine2 = new Cuisine("Middle Eastern", entityManager.find(Region.class, "Asian"), entityManager.find(Religion.class, "None"), entityManager.find(Ingredient.class, (long) 1));
+        cuisines.add(cuisine2);
+
+        for(Cuisine loopCuisine : cuisines)
+        {
+            this.entityManager.persist(loopCuisine);
+            LOGGER.info("Persisted to DB: " + loopCuisine);
+            this.entityManager.flush();
+            LOGGER.info("Persisted object after flush(non-null id): " + loopCuisine);
+        }
+
+    }
+
+    private void createUserEntity()
+    {
+        List<User> users = new ArrayList<>();
+        User user = new User("Jean", "Dib", "JeanD", "1111", "jeanD@csulb.com", LocalDateTime.now());
+        users.add(user);
+        User user1 = new User("John", "Quach", "JohnQ", "2222", "JohnQ@csulb.com", LocalDateTime.now());
+        users.add(user1);
+        User user2 = new User("Kearne", "Permalino", "KearneP", "3333", "KearneP@csulb.com", LocalDateTime.now());
+        users.add(user2);
+        User user3 = new User("Nikki", "Benitez", "NikkiB", "4444", "NikkiB@csulb.com", LocalDateTime.now());
+        users.add(user3);
+
+        for(User loopUser : users)
+        {
+            this.entityManager.persist(loopUser);
+            LOGGER.info("Persisting object to DB: " + loopUser);
+            this.entityManager.flush();
+            LOGGER.info("Persisting Object after flush (non- null id) " + loopUser);
+        }
+
+    }
+
+    private void createChefEntity()
+    {
+        List<Chef> chefs = new ArrayList<>();
+        Chef chef = new Chef("Gordon", "Ramsay", "Gramsay", "AnIdiotSandwich", "GoldRam@xyz.com", LocalDateTime.now(), 30);
+        chef.addCuisine(this.entityManager.find(Cuisine.class, (long) 1));
+        chefs.add(chef);
+        chef.addFollower(this.entityManager.find(User.class, (long) 1));
+        chef.addFollower(this.entityManager.find(User.class, (long) 2));
+
+        Chef chef1 = new Chef("Ramzi", "Choueiri", "Rchoueiri", "Kebab!", "Rchoueiri@xyz.com", LocalDateTime.now(), 25);
+        chef1.addCuisine(this.entityManager.find(Cuisine.class, (long) 2));
+        chefs.add(chef1);
+        chef1.addFollower(this.entityManager.find(User.class, (long) 1));
+        chef1.addFollower(this.entityManager.find(User.class, (long) 2));
+        for (Chef loopChef : chefs)
+        {
+            this.entityManager.persist(chef);
+            LOGGER.info("Persisting object to DB: " + loopChef);
+            this.entityManager.flush();
+            LOGGER.info("Persisting Object after flush (non- null id) " + loopChef);
+
+        }
+
+    }
+
+    private void createFoodCriticEntity()
+    {
+        List<FoodCritic> foodCritics = new ArrayList<>();
+        FoodCritic foodCritic = new FoodCritic("Frank", "Bruni", "Fbruni", "1234", "Fbruni@critic.com", LocalDateTime.now(),"The New York Times");
+        foodCritic.addFollower(this.entityManager.find(User.class, (long) 3));
+        foodCritic.addFollower(this.entityManager.find(User.class, (long) 4));
+        foodCritics.add(foodCritic);
+
+        FoodCritic foodCritic1 = new FoodCritic("Katie", "Lee", "Klee", "5678", "Klee@critic.com", LocalDateTime.now(),"Bravo's Top Chef");
+        foodCritics.add(foodCritic1);
+        for(FoodCritic loopFoodCritic : foodCritics)
+        {
+            this.entityManager.persist(loopFoodCritic);
+            LOGGER.info("Persisting object to DB: " + loopFoodCritic);
+            this.entityManager.flush();
+            LOGGER.info("persisting object after flush (non-null id)" + loopFoodCritic);
+        }
+    }
+
+    private void createRecipeEntity()
+    {
+        Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
+        recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
+        recipe.setChef(this.entityManager.find(Chef.class, (long) 6));
+        recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
+        //recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
+        this.entityManager.persist(recipe);
+        this.entityManager.flush();
+        LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
+
+    }
+
+
     private void createRegionEntity() {
         Set<Region> regions = new HashSet<>();
-        regions.add(new Region("African"));
-        regions.add(new Region("American"));
-        regions.add(new Region("European"));
-        regions.add(new Region("Asian"));
-        regions.add(new Region("Oceanic"));
         for(Region temp : regions)
         {
             this.entityManager.persist(temp);
@@ -81,44 +207,18 @@ public class StarterApplication
         }
 
     }
-    //populate Religion //not sure what cuisine religion is
     private void creatReligionEntity()
     {
         Set<Religion> religions = new HashSet<>();
-        religions.add(new Religion("Christianity"));
-        religions.add(new Religion("Judaism"));
-        religions.add(new Religion("Islam"));
-        religions.add(new Religion("Hinduism"));
-        religions.add(new Religion("Buddhism"));
         for(Religion temp : religions)
         {
             this.entityManager.persist(temp);
             LOGGER.info("Persisted to DB: " + temp);
         }
     }
-    //populate Type
     private void createTypeEntity()
     {
         List<Type> types = new ArrayList<>();
-        types.add(new Type("Acid Regulator"));
-        types.add(new Type("Anticaking Agent"));
-        types.add(new Type("Antifoaming Agent"));
-        types.add(new Type("Antioxidant"));
-        types.add(new Type("Carrier"));
-        types.add(new Type("Color"));
-        types.add(new Type("Emulsifiers"));
-        types.add(new Type("Firming Agent"));
-        types.add(new Type("Flavor Enhancer"));
-        types.add(new Type("Foaming Agent"));
-        types.add(new Type("Gelling Agent"));
-        types.add(new Type("Glazing Agent"));
-        types.add(new Type("Humectant"));
-        types.add(new Type("Preservative"));
-        types.add(new Type("Raising Agent"));
-        types.add(new Type("Sequestrant"));
-        types.add(new Type("Stabilizer"));
-        types.add(new Type("Sweetener"));
-        types.add(new Type("Thickener"));
 
         for(Type temp : types)
         {
@@ -127,79 +227,37 @@ public class StarterApplication
         }
     }
 
-    private void createIngredientEntity()
-    {
-        Ingredient ingredient = new Ingredient();
-        ingredient.setName("Salt");
-        entityManager.find(Type.class, "Flavor Enhancer ").addIngredient(ingredient);
-        ingredient.setDescription("A mineral composed primarily of sodium chloride (NaCl), " +
-                                    " and one of the oldest and most ubiquitous food seasonings," +
-                                    " and salting is an important method of food preservation.");
-        this.entityManager.persist(ingredient);
-        LOGGER.info("Persisting Into DB: " + ingredient);
-        this.entityManager.flush();
-        LOGGER.info("Persisted object after flush(non-null id): " + ingredient);
-
-    }
-
-    private void createRecipeEntity()
-    {
-
-        Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
-        recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
-        this.entityManager.persist(recipe);
-        this.entityManager.flush();
-        LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
-
-        Recipe recipe2 = new Recipe("hard boiled egg", "steamed eggs", Duration.ofMinutes(8).toString(), Duration.ofMinutes(5).toString(), 1, 1);
-        recipe2.addStep(new Step(1, "sink eggs in water and boil them for 8 minutes", 8));
-        this.entityManager.persist(recipe2);
-        this.entityManager.flush();
-        LOGGER.info("Persisted Object after flush (non-null id):  recipe2 " + recipe2);
-    }
 
     private void createStepEntity()
     {
-        Step step = new Step(2, "add 1tbs of salt", 1);
-        Recipe recipeFrench = new Recipe("french fries", "good old French Fries", Duration.ofMinutes(30).toString(), Duration.ofMinutes(15).toString(),2,2);
-        step.setRecipe(recipeFrench);
-        this.entityManager.persist(recipeFrench);
+        Step step = new Step(1, "add 1tbs of salt", 1);
+        //Recipe recipeFrench = new Recipe("french fries", "good old French Fries", Duration.ofMinutes(30).toString(), Duration.ofMinutes(15).toString(),2,2);
+        step.setRecipe(this.entityManager.find(Recipe.class, (long) 1));
+        //this.entityManager.persist(recipeFrench);
         this.entityManager.persist(step);
         this.entityManager.flush();
         LOGGER.info("persisted object after flush(non-null id): " + step);
     }
 
-    private void createCuisineEntity()
-    {
-        Cuisine cuisine = new Cuisine();
-        cuisine.setName("Johnny's");
-       // cuisine.setRegion(new Region("American"));
-       // cuisine.setReligion(new Religion("Christianity"));
-        entityManager.find(Region.class, "American").addCuisine(cuisine);
-        entityManager.find(Religion.class, "Christianity").addCuisine(cuisine);
-        entityManager.find(Recipe.class, (long)1).setCuisine(cuisine);
-        this.entityManager.persist(cuisine);
-        LOGGER.info("Persisted to DB: " + cuisine);
-        this.entityManager.flush();
-        LOGGER.info("Persisted object after flush(non-null id): " + cuisine);
 
-
-    }
 
     private void createReviewEntity()
     {
         Review rev = new Review();
         rev.setDescription("Amazing. Very tasty!");
-        rev.setRecipeID(entityManager.find(Recipe.class,"Shawerma").);
-        Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2021-04-19");
-        rev.setDateCompleted((date);
-
+        rev.setRating(10);
+        rev.setRecipe(entityManager.find(Recipe.class,(long)2));
+        LocalDate date = LocalDate.of(2020, 5, 19);
+        rev.setDateCompleted(date);
+        FoodCritic temp = new FoodCritic("Foo", "Bar", "Fbar", "56789", "fbar@foob.com", LocalDateTime.now(), "Facebook");
+        this.entityManager.persist(temp);
+        rev.setFoodCritic(temp);
 
         this.entityManager.persist(rev);
         LOGGER.info("Persisted to DB: " + rev);
         this.entityManager.flush();
         LOGGER.info("Persisted object after flush(non-null id): " + rev);
     }
+
+
 }
-
-

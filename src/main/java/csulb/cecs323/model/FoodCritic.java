@@ -1,46 +1,88 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class FoodCritic {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int criticID;
-
+@DiscriminatorValue(value = "FOODCRITIC")
+@Table(name = "FOODCRITICS")
+/**
+ * A FoodCritic is a type of User who writes Reviews to food recipes
+ */
+public class FoodCritic extends User
+{
     private String currentPlatform;
 
-    @OneToMany
-    private List<Review> review = new ArrayList<>();
 
-    public FoodCritic() {};
+    @OneToMany(mappedBy = "foodCritic", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    /**
+     * Connects FoodCritic to all reviews
+     */
+    private Set<Review> reviews = new HashSet<>();
+    /**
+     * Subtotal for number of reviews done by FoodCritic
+     */
+    private int numberOfReview = reviews.size();
 
-    public FoodCritic(int criticID, String currentPlatform, List<Review> review) {
-        this.setCriticID(criticID);
+    /**
+     * Empty Constructor for FoodCritic
+     */
+    public FoodCritic() {}
+
+    /**
+     * Constructor for creating a FoodCritic
+     * @param fn first name of food critic
+     * @param ls last name of food critic
+     * @param userName username of account
+     * @param pw password to access account
+     * @param email email used to register account
+     * @param dateReg date when food critic first registered
+     * @param currentPlatform platform used
+     */
+    public FoodCritic(String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg, String currentPlatform)
+    {
+        super(fn, ls, userName, pw, email, dateReg);
         this.setCurrentPlatform(currentPlatform);
-        this.setReview(review);
     }
 
-    public int getCriticID() { return criticID; }
+    public String getCurrentPlatform() {
+        return currentPlatform;
+    }
 
-    public void setCriticID(int criticID) { this.criticID = criticID; }
+    public void setCurrentPlatform(String currentPlatform) {
+        this.currentPlatform = currentPlatform;
+    }
 
-    public String getCurrentPlatform() { return currentPlatform; }
+    public Set<Review> getReview() {
+        return reviews;
+    }
 
-    public void setCurrentPlatform(String currentPlatform) { this.currentPlatform = currentPlatform; }
 
-    public List<Review> getReview() { return review; }
+    public int getNumberOfReview()
+    {
+        return numberOfReview;
+    }
 
-    public void setReview(List<Review> review) { this.review = review; }
+    /**
+     * Adds a Review to a FoodCritic
+     * @param review review done by food critic
+     */
+    public void addReview(Review review) {
+        boolean added = this.reviews.add(review);
+        if (added) {
+            review.setFoodCritic(this);
+        }
+    }
+
 
     @Override
     public String toString() {
         return "FoodCritic{" +
-                "criticID=" + criticID +
                 ", currentPlatform='" + currentPlatform + '\'' +
-                ", review=" + review +
+                ", review=" + reviews +
                 '}';
+
     }
 }

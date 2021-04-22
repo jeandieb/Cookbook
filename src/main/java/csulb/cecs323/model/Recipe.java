@@ -1,11 +1,11 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "RECIPES")
 public class Recipe
 {
     @Id
@@ -30,7 +30,17 @@ public class Recipe
     @ManyToOne
     private Cuisine cuisine;
 
-    public Recipe(){};
+    @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private Set<Review> reviews = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn (nullable = false)
+    private Chef chef;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    private Set<RecipeIngredient> ingredients = new HashSet<>();
+
+    public Recipe(){}
 
     public Recipe(String na, String desc, String prepT, String cookT, int difficultyRating, int numberOfServings)
     {
@@ -114,4 +124,42 @@ public class Recipe
         this.cuisine = cuisine;
         cuisine.addRecipe(this);
     }
+
+    public Set<Review> getReviews() {
+        return this.reviews;
+    }
+
+    public void addReview (Review review)
+    {
+        boolean added = this.reviews.add(review);
+        if (added)
+        {
+            review.setRecipe(this);
+        }
+    }
+
+    public Chef getChef() {
+        return chef;
+    }
+
+    public void setChef(Chef chef)
+    {
+        this.chef = chef;
+        chef.addRecipe(this);
+    }
+
+    public void addIngredient(Ingredient ingredient, float amount, String units)
+    {
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setAmount(amount);
+        recipeIngredient.setUnits(units);
+        recipeIngredient.setRecipe(this);
+        recipeIngredient.setIngredientId(ingredient.getId());
+        recipeIngredient.setRecipeId(this.Id);
+
+        this.ingredients.add(recipeIngredient);
+        ingredient.getRecipes().add(recipeIngredient);
+    }
+
 }

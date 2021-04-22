@@ -18,7 +18,7 @@
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
 
 			<!-- The value provided is relative to this project's top-level location -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:database/students;create=true" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:database/Cuisine;create=true" />
 			<property name="javax.persistence.jdbc.user" value="app" />
 			<property name="javax.persistence.jdbc.password" value="app" />
 
@@ -46,7 +46,7 @@
 			<!-- to load data from a SQL file. The SQL file must have one INSERT statement per line, no semicolons -->
 			<!-- pathname is relative to folder with project resources -->
 
-<!--			<property name="javax.persistence.sql-load-script-source" value="sql/seed-data.sql" />-->
+			<property name="javax.persistence.sql-load-script-source" value="sql/seed-data.sql" />
 
 			<!-- ***************************** -->
 
@@ -54,7 +54,7 @@
 			<!-- Logging levels, see: https://wiki.eclipse.org/EclipseLink/Examples/JPA/Logging -->
 			<!-- Change property value to OFF or WARNING to disable or minimize logging. -->
 			<!-- Change property value to FINE for detail log entries -->
-			<property name="eclipselink.logging.level" value="WARNING"/>
+			<property name="eclipselink.logging.level" value="FINE"/>
 			<!-- ***************************** -->
 
 		</properties>
