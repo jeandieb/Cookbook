@@ -35,44 +35,45 @@ public class Review {
 
     @ManyToOne
     @JoinColumn (nullable = false)
-    /**
+      /**
      * Connects Review to a FoodCritic
      */
     private FoodCritic foodCritic;
 
     @OneToOne
     @JoinColumn(name = "PREVIOUSREVIEW")
-    /**
+      /**
      * Connecting one Review to another Review (recursive)
      */
     private Review previousReview;
 
     @OneToOne(mappedBy = "previousReview")
     @JoinColumn(name = "RECENTREVIEW")
-    /**
+      /**
      * Connecting one Review to another Review (recursive)
      */
     private Review recentReview;
 
-    /**
-     * Empty constructor for Review
+      /**
+     * Default constructor for Review
      */
     public Review (){}
 
-    /**
+      /**
      * Constructor for creating a Review
      * @param criticID id of a FoodCritic
      * @param dateCompleted date that Review is done
      * @param rating rating given to the food being reviewed
      * @param description description given to review
      */
-    public Review(FoodCritic criticID, LocalDate dateCompleted, float rating, String description)
+    public Review(FoodCritic critic, LocalDate dateCompleted, float rating, String description)
     {
-        this.foodCritic = criticID;
+        this.foodCritic = critic;
         this.dateCompleted = dateCompleted;
         this.rating = rating;
         this.description = description;
     }
+
 
     public LocalDate getDateCompleted() { return dateCompleted; }
 
