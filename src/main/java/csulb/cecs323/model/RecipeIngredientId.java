@@ -7,6 +7,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+* Recipe Ingredient Id class represents the composite key for the Recipe Ingredient class. 
+* @author Jean
+*/
+
 public class RecipeIngredientId implements Serializable
 {
     private long recipeId;
@@ -37,6 +42,10 @@ public class RecipeIngredientId implements Serializable
         this.ingredientId = ingredientId;
     }
 
+    /**
+    * Checks if object passed is equal to this Recipe Ingredient 
+    * @return true if object is equal to current Recipe Iggredient Object
+    */
     @Override
     public boolean equals(Object object)
     {
@@ -48,6 +57,10 @@ public class RecipeIngredientId implements Serializable
         else return false;
     }
 
+    /**
+    * Creates a hashcode from recipeId and ingredientId
+    * @return hash of recipeId with ingredientId
+    */
     @Override
     public int hashCode() {
         return Objects.hash(recipeId, ingredientId);
