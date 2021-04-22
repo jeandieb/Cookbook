@@ -10,8 +10,10 @@ import java.util.Set;
 @Table(name = "CHEFS")
 public class Chef extends User
 {
+    /** A measure of a chefs experience. */
     private int yearsOfExperience;
 
+    /** A list of recipes. */
     @OneToMany(mappedBy = "chef")
     private Set<Recipe> recipes = new HashSet<>();
 
@@ -43,6 +45,10 @@ public class Chef extends User
         return recipes;
     }
 
+    /**
+     * Adds a recipe to a list of recipes for a chef
+     * @param recipe   A recipe that belong to a chef
+     */
     public void addRecipe(Recipe recipe)
     {
         boolean added = this.recipes.add(recipe);
@@ -54,6 +60,10 @@ public class Chef extends User
 
     public Set<Cuisine> getCuisines() {return cuisines;}
 
+    /**
+     * Adds a cuisine to a list of cuisines for a chef
+     * @param cuisine   A cuisine a chef is known for
+     */
     public void addCuisine(Cuisine cuisine)
     {
         boolean added = cuisines.add(cuisine);
