@@ -16,6 +16,7 @@ Kearne Permalino
 
 Nikki Benitez
 - Started and completed the IngredientAmount entity classes
+- Started Recipe and Ingredient classes, but were not added due to other dependencies needed. 
 
 
 
