@@ -9,16 +9,16 @@ Jean Dieb
 - Has the most commits on Github because he is the main one helping to check the others’ work and helps change whatever necessary to make the entities work with each other
 
 John Quach
+- Created entity classes for User, Chefs, and Experienced_Cuisine_Chefs
+- Created function to persist Users, Chefs, and Experienced_Cuisine_Chefs into the database
 
 Kearne Permalino
-- Started the Review and FoodCritic entity classes 
-- Started the createReviewEntity and createFoodCriticEntity methods in the StarterApplication
+- Created the Review and FoodCritic entity classes 
+- Created the methods to persist Reviews and FoodCritics to the database
 
 Nikki Benitez
 - Started and completed the IngredientAmount entity classes
 - Started Recipe and Ingredient classes, but were not added due to other dependencies needed. 
-
-
 
 
 Because Jean did the majority of the work in this part of the project, he deserves 40% of the points. John should get 20%. Kearne should get 20%. Nikki should get 20%.
