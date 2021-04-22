@@ -4,6 +4,12 @@ import org.eclipse.persistence.annotations.PrimaryKey;
 
 import javax.persistence.*;
 
+/**
+* Recipe Ingredient class is an object that connects the recipe to ingredient along with it's measurements. 
+* @author Jean
+*
+*/
+
 @Entity
 @Table(name = "INGREDIENT_AMOUNT")
 @IdClass(RecipeIngredientId.class)
