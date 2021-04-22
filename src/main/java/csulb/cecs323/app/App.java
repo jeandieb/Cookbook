@@ -36,6 +36,10 @@ public class App {
         application.chefEntity();
         tx.commit();
 
+        tx.begin();
+        application.expCuisineChefs();
+        tx.commit();
+
         LOGGER.fine("End of Transaction");
 
     }
@@ -53,6 +57,14 @@ public class App {
 
     private void chefEntity(){
         Chefs chef = new Chefs(5);
+        this.entityManager.persist(chef);
+        LOGGER.info("Persisting object to DB: " + chef);
+        this.entityManager.flush();
+        LOGGER.info("Persisting Object after flush (non- null id) " + chef);
+    }
+
+    private void expCuisineChefs(){
+        Experienced_Cuisine_Chefs chef = new Experienced_Cuisine_Chefs(5);
         this.entityManager.persist(chef);
         LOGGER.info("Persisting object to DB: " + chef);
         this.entityManager.flush();

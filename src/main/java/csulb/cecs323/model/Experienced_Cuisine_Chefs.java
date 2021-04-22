@@ -8,15 +8,24 @@ public class Experienced_Cuisine_Chefs {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long chef_id;
 
-    private long cuisine_id;
+    private int cuisine_id;
 
     public long getChef_id() {
         return chef_id;
     }
 
-    public long getCuisine_id() {
+    public int getCuisine_id() {
         return cuisine_id;
     }
+
+    public int setCuisine_id(int cuisine_id){
+        return this.cuisine_id = cuisine_id;
+    }
+
+    public Experienced_Cuisine_Chefs(int cuisine_id){
+        this.setCuisine_id(cuisine_id);
+    }
+
 
     public Experienced_Cuisine_Chefs(){}
 
