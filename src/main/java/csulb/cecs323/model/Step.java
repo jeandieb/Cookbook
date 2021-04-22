@@ -4,6 +4,7 @@ package csulb.cecs323.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "STEPS")
 public class Step
 {
     @Id

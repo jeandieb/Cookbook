@@ -11,6 +11,7 @@ import java.util.Date;
 import java.text.DateFormat;
 
 @Entity
+@Table(name = "REVIEWS")
 public class Review {
 
     @Id
@@ -26,7 +27,7 @@ public class Review {
     private Recipe recipe;
 
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn (nullable = false)
     private FoodCritic foodCritic;
 

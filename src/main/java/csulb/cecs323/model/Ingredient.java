@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "INGREDIENTS")
 public class Ingredient
 {
     @Id
@@ -19,7 +20,7 @@ public class Ingredient
 
     private String description;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "INGREDIENT_CUISINE",
             joinColumns = @JoinColumn(name = "ingredientID", referencedColumnName = "ID"),

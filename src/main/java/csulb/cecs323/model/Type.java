@@ -1,15 +1,13 @@
 // this is a look-up table for ingredients' types
 package csulb.cecs323.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "TYPES")
 public class Type
 {
     @Id

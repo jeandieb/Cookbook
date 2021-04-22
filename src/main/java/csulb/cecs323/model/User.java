@@ -3,13 +3,15 @@ package csulb.cecs323.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-//@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING) //used for SINGLE_TABLE
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING) //used for SINGLE_TABLE
 @Table(name = "USERS") //USER is a SQL KEYWORD!!
 @Entity
-public class User //implements Serializable
+public class User implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +28,15 @@ public class User //implements Serializable
     private String email;
 
     private LocalDateTime dateRegistered;
+
+    @ManyToMany
+    @JoinTable(
+            name = "FOLLOWER_FOLLOWING"
+    )
+    private Set<User> followers = new HashSet<>();
+
+    @ManyToMany(mappedBy = "followers")
+    private Set<User> followings = new HashSet<>();
 
     public User() {}
 
@@ -89,5 +100,44 @@ public class User //implements Serializable
 
     public long getId() {
         return Id;
+    }
+
+    public Set<User> getFollowers() {
+        return followers;
+    }
+
+    public void addFollower(User follower)
+    {
+        boolean added = this.followers.add(follower);
+        if (added)
+        {
+            follower.addFollowing(this);
+        }
+    }
+
+    public Set<User> getFollowings() {
+        return followings;
+    }
+
+    //follows
+    public void addFollowing(User following) {
+        boolean added = this.followings.add(following);
+        if(added)
+        {
+            following.addFollower(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "Id=" + Id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", dateRegistered=" + dateRegistered +
+                '}';
     }
 }

@@ -1,15 +1,12 @@
 package csulb.cecs323.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-//@DiscriminatorValue(value = "FOODCRITIC")//used with SINGLE_TABLE
+@DiscriminatorValue(value = "FOODCRITIC")
 @Table(name = "FOODCRITICS")
 public class FoodCritic extends User
 {

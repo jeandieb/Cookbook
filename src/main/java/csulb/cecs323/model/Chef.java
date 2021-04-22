@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-//@DiscriminatorValue("CHEF") //used with SINGLE_TABLE
+@DiscriminatorValue("CHEF")
 @Table(name = "CHEFS")
 public class Chef extends User
 {
@@ -16,10 +16,9 @@ public class Chef extends User
     private Set<Recipe> recipes = new HashSet<>();
 
     @ManyToMany
+    @JoinColumn(nullable = false)
     @JoinTable(
-            name = "CHEF_CUISINE"//,
-         //   joinColumns = @JoinColumn(name = "ChefId", referencedColumnName = "ChefId"),
-           // inverseJoinColumns = @JoinColumn(name = "CuisineId", referencedColumnName = "Id")
+            name = "CHEF_CUISINE"
     )
     private Set<Cuisine> cuisines = new HashSet<>();
 
@@ -60,5 +59,12 @@ public class Chef extends User
         boolean added = cuisines.add(cuisine);
         if(added)
             cuisine.addChef(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Chef{" + "name=" + this.getFirstName() + " " + this.getLastName() +
+                " yearsOfExperience=" + yearsOfExperience +
+                '}';
     }
 }
