@@ -26,7 +26,8 @@ public class StarterApplication
         this.entityManager = manager;
     }
 
-    public static void main(String [] args) {
+    public static void main(String [] args)
+    {
         LOGGER.fine("Creating EntityManagerFactory and EntityManager");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("starter_unit");
         EntityManager manager = factory.createEntityManager();
@@ -60,17 +61,115 @@ public class StarterApplication
         semesterProjectApplication.createFoodCriticEntity();
         tx.commit();
 
+        //add followers
 
-        //create recipe
+/*//      populate region, religion, and type, better be replaced by a sql querries
         tx.begin();
-        semesterProjectApplication.createRecipeEntity();
+        semesterProjectApplication.createRegionEntity();
+        semesterProjectApplication.creatReligionEntity();
+        semesterProjectApplication.createTypeEntity();
+        tx.commit();
+        */
+
+/*
+//     create and commit an ingredient
+        tx.begin();
+        semesterProjectApplication.createIngredientEntity();
+        tx.commit();
+        */
+
+
+
+//        tx.begin();
+//        Cuisine temp = manager.find(Cuisine.class, (long) 1.0);
+//        System.out.println("here " + temp);
+//        temp.addIngredients(manager.find(Ingredient.class, (long) 1.0));
+//        manager.persist(temp);
+//        tx.commit();
+
+//        tx.begin();
+//        manager.remove(manager.find(Recipe.class, (long)1));
+//        LOGGER.info("removing object from DB: ");
+//        tx.commit();
+
+/*
+       //create and persist a user, a critic and a review
+        tx.begin();
+        semesterProjectApplication.createUserEntity();
         tx.commit();
 
-        //create Steps
         tx.begin();
-        semesterProjectApplication.createStepEntity();
+        semesterProjectApplication.createFoodCriticEntity();
         tx.commit();
 
+        tx.begin();
+        semesterProjectApplication.createReviewEntity();
+        tx.commit();
+*/
+
+
+/*
+        //add a follower to a user
+        tx.begin();
+        semesterProjectApplication.createUserEntity();
+        tx.commit();
+
+        tx.begin();
+        User follower = manager.find(User.class, (long) 2);
+        User user = new User("David", "x", "user", "pass", "email@email", LocalDateTime.now());
+        user.addFollower(follower);
+        manager.persist(user);
+        manager.flush();
+        tx.commit();*/
+
+
+/*        //testing Ingredient amount/recipe.addIngredient is causing violation of fk // fixed
+        tx.begin();
+        Chef chef = new Chef("fname", "lname", "username", "password", "email@mail.com", LocalDateTime.now(), 15);
+        manager.persist(chef);
+        manager.flush();
+        tx.commit();
+
+        tx.begin();
+        Ingredient ingredient = new Ingredient("Ketchup", new Type("table condiment"), "a sweet and tangy condiment made from tomatoes, sugar, and vinegar, with seasonings and spices.");
+        manager.persist(ingredient);
+        manager.flush();
+
+        Ingredient ingredient2 = new Ingredient("Ketchup2", new Type("table condiment2"), "a sweet and tangy condiment made from tomatoes, sugar, and vinegar, with seasonings and spices.");
+        manager.persist(ingredient2);
+        manager.flush();
+        tx.commit();
+
+        tx.begin();
+        Recipe recipe = new Recipe("Burger", "Good old Hamburger", Duration.ofMinutes(30).toString(), Duration.ofMinutes(15).toString(), 7, 2);
+        //recipe.addIngredient(ingredient2, (float) 1, "tbsp");
+        recipe.setChef(chef);
+        manager.persist(recipe);
+        manager.flush();
+        tx.commit();
+
+
+        tx.begin();
+        recipe.addIngredient(ingredient2, (float) 1, "tbsp");
+        tx.commit();*/
+
+       //trying to insert into RecipeIngredient
+//        tx.begin();
+//        RecipeIngredient ri = new RecipeIngredient();
+//        ri.setRecipeId((long)1);
+//        ri.setIngredientId((long)1);
+//        ri.setIngredient(ingredient);
+//        ri.setRecipe(recipe);
+//        ri.setUnits("tbsp");
+//        ri.setAmount((float) 2.2);
+//        manager.persist(ri);
+//        tx.commit();
+
+
+        //create and commit cuisine
+/*        tx.begin();
+        semesterProjectApplication.createCuisineEntity();
+        tx.commit();*/
     }
 
     private void createIngredientEntity()
@@ -184,20 +283,8 @@ public class StarterApplication
         }
     }
 
-    private void createRecipeEntity()
-    {
-        Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
-        recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
-        recipe.setChef(this.entityManager.find(Chef.class, (long) 6));
-        recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
-        //recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
-        this.entityManager.persist(recipe);
-        this.entityManager.flush();
-        LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
 
-    }
-
-
+    //populate Region
     private void createRegionEntity() {
         Set<Region> regions = new HashSet<>();
         for(Region temp : regions)
@@ -207,6 +294,7 @@ public class StarterApplication
         }
 
     }
+    //populate Religion //not sure what cuisine religion is
     private void creatReligionEntity()
     {
         Set<Religion> religions = new HashSet<>();
@@ -216,6 +304,7 @@ public class StarterApplication
             LOGGER.info("Persisted to DB: " + temp);
         }
     }
+    //populate Type
     private void createTypeEntity()
     {
         List<Type> types = new ArrayList<>();
@@ -227,13 +316,31 @@ public class StarterApplication
         }
     }
 
+    private void createRecipeEntity()
+    {
+
+        Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
+        recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
+        recipe.setChef(this.entityManager.find(Chef.class, (long)1));
+        //recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
+        this.entityManager.persist(recipe);
+        this.entityManager.flush();
+        LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
+
+        Recipe recipe2 = new Recipe("hard boiled egg", "steamed eggs", Duration.ofMinutes(8).toString(), Duration.ofMinutes(5).toString(), 1, 1);
+        recipe2.addStep(new Step(1, "sink eggs in water and boil them for 8 minutes", 8));
+        recipe2.setChef(this.entityManager.find(Chef.class, (long)1));
+        this.entityManager.persist(recipe2);
+        this.entityManager.flush();
+        LOGGER.info("Persisted Object after flush (non-null id):  recipe2 " + recipe2);
+    }
 
     private void createStepEntity()
     {
-        Step step = new Step(1, "add 1tbs of salt", 1);
-        //Recipe recipeFrench = new Recipe("french fries", "good old French Fries", Duration.ofMinutes(30).toString(), Duration.ofMinutes(15).toString(),2,2);
-        step.setRecipe(this.entityManager.find(Recipe.class, (long) 1));
-        //this.entityManager.persist(recipeFrench);
+        Step step = new Step(2, "add 1tbs of salt", 1);
+        Recipe recipeFrench = new Recipe("french fries", "good old French Fries", Duration.ofMinutes(30).toString(), Duration.ofMinutes(15).toString(),2,2);
+        step.setRecipe(recipeFrench);
+        this.entityManager.persist(recipeFrench);
         this.entityManager.persist(step);
         this.entityManager.flush();
         LOGGER.info("persisted object after flush(non-null id): " + step);
