@@ -41,9 +41,9 @@ public class Review {
 
     public Review (){}
 
-    public Review(FoodCritic criticID, LocalDate dateCompleted, float rating, String description)
+    public Review(FoodCritic critic, LocalDate dateCompleted, float rating, String description)
     {
-        this.foodCritic = criticID;
+        this.foodCritic = critic;
         this.dateCompleted = dateCompleted;
         this.rating = rating;
         this.description = description;
