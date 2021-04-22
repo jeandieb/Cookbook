@@ -1,7 +1,7 @@
 Database Project Team 7 Part 1 Contributions
 
 
-Originally, we divided the classes evenly between all of us. But some had more work than others due to dependencies from the other classes. 
+Originally, we divided the classes evenly between all of us. But some had more work than others due to dependencies from the other classes. All did Javadocs of the entity classes, each taking an equal number of classes to do the Javadocs
 
 Jean Dieb
 - Started and finished Cuisine, Ingredient, Recipe, and Step entity classes and associated creation entity methods in the StarterApplication
