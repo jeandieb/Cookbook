@@ -24,7 +24,7 @@ public class FoodCritic extends User
     /**
      * Subtotal for number of reviews done by FoodCritic
      */
-    private int numberOfReview = reviews.size();
+    private int numberOfReview = 0;
 
     /**
      * Empty Constructor for FoodCritic
@@ -33,17 +33,17 @@ public class FoodCritic extends User
 
     /**
      * Constructor for creating a FoodCritic
-     * @param fn first name of food critic
-     * @param ls last name of food critic
+     * @param firstName first name of food critic
+     * @param lastName last name of food critic
      * @param userName username of account
-     * @param pw password to access account
+     * @param password password to access account
      * @param email email used to register account
-     * @param dateReg date when food critic first registered
+     * @param dateRegistered date when food critic first registered
      * @param currentPlatform platform used
      */
-    public FoodCritic(String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg, String currentPlatform)
+    public FoodCritic(String firstName, String lastName, String userName, String password, String email, LocalDateTime dateRegistered, String currentPlatform)
     {
-        super(fn, ls, userName, pw, email, dateReg);
+        super(firstName, lastName, userName, password, email, dateRegistered);
         this.setCurrentPlatform(currentPlatform);
     }
 
@@ -62,7 +62,7 @@ public class FoodCritic extends User
 
     public int getNumberOfReview()
     {
-        return numberOfReview;
+        return reviews.size();
     }
 
     /**
@@ -74,6 +74,7 @@ public class FoodCritic extends User
         if (added) {
             review.setFoodCritic(this);
         }
+        numberOfReview++;
     }
 
 
