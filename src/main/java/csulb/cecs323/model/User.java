@@ -49,14 +49,14 @@ public class User implements Serializable
 
     public User() {}
 
-    public User(String fn, String ls, String userName, String pw, String email, LocalDateTime dateReg)
+    public User(String firstName, String lastName, String userName, String password, String email, LocalDateTime dateRegistered)
     {
-        setFirstName(fn);
-        setLastName(ls);
+        setFirstName(firstName);
+        setLastName(lastName);
         setUserName(userName);
-        setPassword(pw);
+        setPassword(password);
         setEmail(email);
-        setDateRegistered(dateReg);
+        setDateRegistered(dateRegistered);
     }
 
     public String getFirstName() {
