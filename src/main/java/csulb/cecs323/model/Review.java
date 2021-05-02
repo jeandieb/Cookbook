@@ -12,6 +12,9 @@ import java.text.DateFormat;
 
 @Entity
 @Table(name = "REVIEWS")
+/**
+ * A User posts a Review, which is a post used to document a user's opinion of the recipe
+ */
 public class Review {
 
     @Id
@@ -24,23 +27,45 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    /**
+     * Connects Review to a Recipe
+     */
     private Recipe recipe;
 
 
     @ManyToOne
     @JoinColumn (nullable = false)
+      /**
+     * Connects Review to a FoodCritic
+     */
     private FoodCritic foodCritic;
 
     @OneToOne
     @JoinColumn(name = "PREVIOUSREVIEW")
+      /**
+     * Connecting one Review to another Review (recursive)
+     */
     private Review previousReview;
 
     @OneToOne(mappedBy = "previousReview")
     @JoinColumn(name = "RECENTREVIEW")
+      /**
+     * Connecting one Review to another Review (recursive)
+     */
     private Review recentReview;
 
+      /**
+     * Default constructor for Review
+     */
     public Review (){}
 
+      /**
+     * Constructor for creating a Review
+     * @param criticID id of a FoodCritic
+     * @param dateCompleted date that Review is done
+     * @param rating rating given to the food being reviewed
+     * @param description description given to review
+     */
     public Review(FoodCritic critic, LocalDate dateCompleted, float rating, String description)
     {
         this.foodCritic = critic;
