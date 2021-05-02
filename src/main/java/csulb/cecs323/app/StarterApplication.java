@@ -28,7 +28,7 @@ public class StarterApplication
 
     public static void main(String [] args) {
         LOGGER.fine("Creating EntityManagerFactory and EntityManager");
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("starter_unit");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("cookbook_entry");
         EntityManager manager = factory.createEntityManager();
         StarterApplication semesterProjectApplication = new StarterApplication(manager);
 
