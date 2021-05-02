@@ -30,6 +30,7 @@ public class User implements Serializable
     private String password;
 
     /** The the email of the user which can be used to contact. */
+    @Column(unique = true)
     private String email;
 
     /** The timestamp of when a user registered. */
