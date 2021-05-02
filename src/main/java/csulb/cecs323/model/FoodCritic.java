@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@DiscriminatorValue(value = "FOODCRITIC")
 @Table(name = "FOODCRITICS")
 /**
  * A FoodCritic is a type of User who writes Reviews to food recipes

@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@DiscriminatorValue("CHEF")
 @Table(name = "CHEFS")
 public class Chef extends User
 {
