@@ -1,17 +1,16 @@
 package csulb.cecs323.model;
 
-import jdk.management.jfr.RecordingInfo;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Date;
-import java.text.DateFormat;
 
 @Entity
-@Table(name = "REVIEWS")
+@Table(
+        name = "REVIEWS",
+        uniqueConstraints =
+                @UniqueConstraint(columnNames = {"recipe", "foodCritic", "description"})
+)
 /**
  * A User posts a Review, which is a post used to document a user's opinion of the recipe
  */
@@ -23,6 +22,7 @@ public class Review {
 
     private LocalDate dateCompleted;
     private float rating;
+
     private String description;
 
     @ManyToOne
@@ -41,18 +41,12 @@ public class Review {
     private FoodCritic foodCritic;
 
     @OneToOne
-    @JoinColumn(name = "PREVIOUSREVIEW")
+    @JoinColumn
       /**
      * Connecting one Review to another Review (recursive)
      */
     private Review previousReview;
 
-    @OneToOne(mappedBy = "previousReview")
-    @JoinColumn(name = "RECENTREVIEW")
-      /**
-     * Connecting one Review to another Review (recursive)
-     */
-    private Review recentReview;
 
       /**
      * Default constructor for Review
@@ -61,7 +55,7 @@ public class Review {
 
       /**
      * Constructor for creating a Review
-     * @param criticID id of a FoodCritic
+     * @param Id id of a FoodCritic
      * @param dateCompleted date that Review is done
      * @param rating rating given to the food being reviewed
      * @param description description given to review
@@ -110,19 +104,9 @@ public class Review {
     public void setPreviousReview(Review previousReview)
     {
         this.previousReview = previousReview;
-        previousReview.setRecentReview(this);
     }
 
-    public Review getRecentReview()
-    {
-        return recentReview;
-    }
 
-    public void setRecentReview(Review recentReview)
-    {
-        this.recentReview = recentReview;
-        recentReview.setPreviousReview(this);
-    }
 
     @Override
     public String toString() {
