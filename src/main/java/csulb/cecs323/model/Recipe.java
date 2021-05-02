@@ -5,39 +5,62 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "RECIPES")
+/**
+  * A recipe is a food created by following a step-by-step instruction with its ingredients.
+  */
 public class Recipe
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /** id used to identify recipe */
     private long Id;
-
+    /** recipe name */
     private String name;
-
+    /** recipe description */
     private String description;
-
+    /** prep time needed for recipe  */
     private String prepTime;
-
+    /** cook time needed for recipe */
     private String cookTime;
-
+    /** recipe difficulty rating */
     private int difficultyRating;
-
+    /** number of servings recipe makes */
     private int numberOfServings;
 
     @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    /** Connects recipe to its steps */
     private Set<Step> steps = new HashSet<>();
 
     @ManyToOne
+    /** Connects recipe to its type of cuisine */
     private Cuisine cuisine;
 
     @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    /** Connects recipe to its reviews */
     private Set<Review> reviews = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn (nullable = false)
+    /** Connects recipe to its chef */
     private Chef chef;
 
-    public Recipe(){};
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    /** Connects recipe to its ingredients */
+    private Set<RecipeIngredient> ingredients = new HashSet<>();
 
+    /** Empty constructor for recipe */
+    public Recipe(){}
+    
+    /**
+     * Constructor for creating a Recipe
+     * @param na name of recipe
+     * @param desc recipe desciption
+     * @param prepT recipe prep time
+     * @param cookT recipe cook time
+     * @param difficultyRating recipe rating of difficulty
+     * @param numberOfServings # of servings recipe makes
+     */
     public Recipe(String na, String desc, String prepT, String cookT, int difficultyRating, int numberOfServings)
     {
         this.setName(na);
@@ -142,6 +165,20 @@ public class Recipe
     {
         this.chef = chef;
         chef.addRecipe(this);
+    }
+
+    public void addIngredient(Ingredient ingredient, float amount, String units)
+    {
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setAmount(amount);
+        recipeIngredient.setUnits(units);
+        recipeIngredient.setRecipe(this);
+        recipeIngredient.setIngredientId(ingredient.getId());
+        recipeIngredient.setRecipeId(this.Id);
+
+        this.ingredients.add(recipeIngredient);
+        ingredient.getRecipes().add(recipeIngredient);
     }
 
 }

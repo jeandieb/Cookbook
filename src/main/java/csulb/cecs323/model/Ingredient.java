@@ -1,10 +1,12 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "INGREDIENTS")
 public class Ingredient
 {
     @Id
@@ -13,22 +15,30 @@ public class Ingredient
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     Type type;
 
     private String description;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "INGREDIENT_CUISINE",
             joinColumns = @JoinColumn(name = "ingredientID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "cuisineID", referencedColumnName = "Id"))
-    private Set<Cuisine> cuisines;
 
+    private Set<Cuisine> cuisines = new HashSet<>();
 
-    public Ingredient() {};
-    //got rid of the constructor to make the user use the .addIngredient method from type
-    //this way we make sure that the List of Ingredients in type is modified everytime we add a new Ingredient
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST)
+    private Set<RecipeIngredient> recipes = new HashSet<>();
+
+    public Ingredient() {}
+
+    public Ingredient(String name, Type type, String description)
+    {
+        this.setName(name);
+        this.setType(type);
+        this.setDescription(description);
+    }
 
     public String getName() {
         return name;
@@ -42,8 +52,10 @@ public class Ingredient
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(Type type)
+    {
         this.type = type;
+        type.addIngredient(this);
     }
 
     public String getDescription() {
@@ -64,6 +76,14 @@ public class Ingredient
         boolean added = this.cuisines.add(cuisine);
         if(added)
             cuisine.getIngredients().add(this);
+    }
+
+    public long getId() {return this.ID;}
+
+
+    public Set<RecipeIngredient> getRecipes()
+    {
+        return this.recipes;
     }
 
     @Override
