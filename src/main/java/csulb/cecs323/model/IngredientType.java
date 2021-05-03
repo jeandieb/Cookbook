@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "TYPES")
-public class Type
+public class IngredientType
 {
     /** The name of the type of ingredient that will be used for recipes. */
     @Id
@@ -18,9 +18,9 @@ public class Type
     @OneToMany(mappedBy = "type", cascade = CascadeType.PERSIST)
     private Set<Ingredient> ingredients = new HashSet<>();
 
-    public Type() {}
+    public IngredientType() {}
 
-    public Type(String na)
+    public IngredientType(String na)
     {
         setName(na);
     }

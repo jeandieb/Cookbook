@@ -16,7 +16,7 @@ public class Ingredient
     private String name;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    Type type;
+    IngredientType type;
 
     private String description;
 
@@ -29,7 +29,7 @@ public class Ingredient
 
     public Ingredient() {}
 
-    public Ingredient(String name, Type type, String description)
+    public Ingredient(String name, IngredientType type, String description)
     {
         this.setName(name);
         this.setIngredientType(type);
@@ -44,11 +44,11 @@ public class Ingredient
         this.name = name;
     }
 
-    public Type getIngredientType() {
+    public IngredientType getIngredientType() {
         return type;
     }
 
-    public void setIngredientType(Type type)
+    public void setIngredientType(IngredientType type)
     {
         this.type = type;
         type.addIngredient(this);

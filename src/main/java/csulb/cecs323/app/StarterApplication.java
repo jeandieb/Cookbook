@@ -76,17 +76,17 @@ public class StarterApplication
     private void createIngredientEntity()
     {
         List<Ingredient> ingredients = new ArrayList<>();
-        Ingredient ingredient = new Ingredient("Salt", entityManager.find(Type.class, "Spice"), "A mineral composed primarily of sodium chloride (NaCl), " +
+        Ingredient ingredient = new Ingredient("Salt", entityManager.find(IngredientType.class, "Spice"), "A mineral composed primarily of sodium chloride (NaCl), " +
                 " and one of the oldest and most ubiquitous food seasonings," +
                 " and salting is an important method of food preservation.");
         ingredients.add(ingredient);
 
-        Ingredient ingredient2 = new Ingredient("Black Pepper", entityManager.find(Type.class, "Spice"), "was historically both a seasoning and a traditional medicine. " +
+        Ingredient ingredient2 = new Ingredient("Black Pepper", entityManager.find(IngredientType.class, "Spice"), "was historically both a seasoning and a traditional medicine. " +
                 " Pepper appears in the Buddhist Samaññaphala Sutta, chapter five, as one of the few medicines" +
                 " a monk is allowed to carry.");
         ingredients.add(ingredient2);
 
-        Ingredient ingredient3 = new Ingredient("Garlic", entityManager.find(Type.class, "Flavor Agent"), " is most often used as a flavoring agent but can also. " +
+        Ingredient ingredient3 = new Ingredient("Garlic", entityManager.find(IngredientType.class, "Flavor Agent"), " is most often used as a flavoring agent but can also. " +
                 " be eaten as a vegetable. It is used to flavor many foods, " +
                 " such as salad dressings, vinaigrettes, marinades, sauces, vegetables, meats, soups, and stews.");
         ingredients.add(ingredient3);
@@ -218,9 +218,9 @@ public class StarterApplication
     }
     private void createTypeEntity()
     {
-        List<Type> types = new ArrayList<>();
+        List<IngredientType> types = new ArrayList<>();
 
-        for(Type temp : types)
+        for(IngredientType temp : types)
         {
             this.entityManager.persist(temp);
             LOGGER.info("Persisted into DB: " + temp);
