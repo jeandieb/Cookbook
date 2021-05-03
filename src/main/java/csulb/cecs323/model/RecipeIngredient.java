@@ -19,12 +19,12 @@ public class RecipeIngredient
 
     private String units;
 
-    @ManyToOne()
-    @PrimaryKeyJoinColumn(name = "RECIPEID", referencedColumnName = "Id")
+    @ManyToOne
+//    @PrimaryKeyJoinColumn(name = "RECIPEID", referencedColumnName = "Id")
     private Recipe recipe;
 
-    @ManyToOne()
-    @PrimaryKeyJoinColumn(name = "INGREDIENTID", referencedColumnName = "ID")
+    @ManyToOne
+//    @PrimaryKeyJoinColumn(name = "INGREDIENTID", referencedColumnName = "ID")
     private Ingredient ingredient;
 
     public RecipeIngredient() {}
