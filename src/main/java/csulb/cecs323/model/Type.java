@@ -45,7 +45,7 @@ public class Type
     public void addIngredient(Ingredient ingredient) {
         boolean added = this.ingredients.add(ingredient);
         if (added)
-            ingredient.setType(this);
+            ingredient.setIngredientType(this);
     }
 
     @Override

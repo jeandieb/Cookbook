@@ -18,12 +18,11 @@ public class RecipeIngredient
     private float amount;
 
     private String units;
-
  //   @Id
     @ManyToOne
     private Recipe recipe;
 
- //   @Id
+
     @ManyToOne
     private Ingredient ingredient;
 

@@ -21,10 +21,7 @@ public class Ingredient
     private String description;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "INGREDIENT_CUISINE",
-            joinColumns = @JoinColumn(name = "ingredientID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "cuisineID", referencedColumnName = "Id"))
+    @JoinTable(name = "INGREDIENT_CUISINE")
     private Set<Cuisine> cuisines = new HashSet<>();
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST)
@@ -35,7 +32,7 @@ public class Ingredient
     public Ingredient(String name, Type type, String description)
     {
         this.setName(name);
-        this.setType(type);
+        this.setIngredientType(type);
         this.setDescription(description);
     }
 
@@ -47,11 +44,11 @@ public class Ingredient
         this.name = name;
     }
 
-    public Type getType() {
+    public Type getIngredientType() {
         return type;
     }
 
-    public void setType(Type type)
+    public void setIngredientType(Type type)
     {
         this.type = type;
         type.addIngredient(this);
