@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class StarterApplication
+public class CookbookApplication
 {
     private EntityManager entityManager;
 
-    private static final Logger LOGGER = Logger.getLogger(StarterApplication.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CookbookApplication.class.getName());
 
-    public StarterApplication(EntityManager manager)
+    public CookbookApplication(EntityManager manager)
     {
         this.entityManager = manager;
     }
@@ -30,45 +30,45 @@ public class StarterApplication
         LOGGER.fine("Creating EntityManagerFactory and EntityManager");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("starter_unit");
         EntityManager manager = factory.createEntityManager();
-        StarterApplication semesterProjectApplication = new StarterApplication(manager);
+        CookbookApplication cookbookApp = new CookbookApplication(manager);
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
 
         //create ingedients
         tx.begin();
-        semesterProjectApplication.createIngredientEntity();
+        cookbookApp.createIngredientEntity();
         tx.commit();
 
         //create cuisines
         tx.begin();
-        semesterProjectApplication.createCuisineEntity();
+        cookbookApp.createCuisineEntity();
         tx.commit();
 
         //create users
         tx.begin();
-        semesterProjectApplication.createUserEntity();
+        cookbookApp.createUserEntity();
         tx.commit();
 
         //create chefs and add  followers
         tx.begin();
-        semesterProjectApplication.createChefEntity();
+        cookbookApp.createChefEntity();
         tx.commit();
 
         //create a food critic and add followers
         tx.begin();
-        semesterProjectApplication.createFoodCriticEntity();
+        cookbookApp.createFoodCriticEntity();
         tx.commit();
 
 
         //create recipe
         tx.begin();
-        semesterProjectApplication.createRecipeEntity();
+        cookbookApp.createRecipeEntity();
         tx.commit();
 
         //create Steps
         tx.begin();
-        semesterProjectApplication.createStepEntity();
+        cookbookApp.createStepEntity();
         tx.commit();
 
     }
