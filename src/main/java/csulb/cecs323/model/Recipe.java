@@ -178,7 +178,7 @@ public class Recipe
         recipeIngredient.setRecipeId(this.Id);
 
         this.ingredients.add(recipeIngredient);
-        ingredient.getRecipes().add(recipeIngredient);
+        ingredient.getRecipeIngredientsList().add(recipeIngredient);
     }
 
 }

@@ -2,7 +2,6 @@ package csulb.cecs323.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,7 +10,7 @@ public class Ingredient
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long id;
 
     private String name;
 
@@ -28,7 +27,7 @@ public class Ingredient
     private Set<Cuisine> cuisines = new HashSet<>();
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST)
-    private Set<RecipeIngredient> recipes = new HashSet<>();
+    private Set<RecipeIngredient> recipeIngredientsList = new HashSet<>();
 
     public Ingredient() {}
 
@@ -77,18 +76,18 @@ public class Ingredient
             cuisine.getIngredients().add(this);
     }
 
-    public long getId() {return this.ID;}
+    public long getId() {return this.id;}
 
 
-    public Set<RecipeIngredient> getRecipes()
+    public Set<RecipeIngredient> getRecipeIngredientsList()
     {
-        return this.recipes;
+        return this.recipeIngredientsList;
     }
 
     @Override
     public String toString() {
         return "Ingredient{" +
-                "ID=" + ID +
+                "ID=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", description='" + description + '\'' +
