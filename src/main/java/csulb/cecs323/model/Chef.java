@@ -13,10 +13,11 @@ public class Chef extends User
     /** A measure of a chefs experience. */
     private int yearsOfExperience;
 
-    /** A list of recipes. */
+    /** A set/list of recipes created. */
     @OneToMany(mappedBy = "chef")
-    private Set<Recipe> recipes = new HashSet<>();
+    private Set<Recipe> recipesCreated = new HashSet<>();
 
+    /** A set/list cuisines */
     @ManyToMany
     @JoinColumn(nullable = false)
     @JoinTable(
@@ -42,7 +43,7 @@ public class Chef extends User
     }
 
     public Set<Recipe> getRecipes() {
-        return recipes;
+        return recipesCreated;
     }
 
     /**
@@ -51,7 +52,7 @@ public class Chef extends User
      */
     public void addRecipe(Recipe recipe)
     {
-        boolean added = this.recipes.add(recipe);
+        boolean added = this.recipesCreated.add(recipe);
         if (added)
         {
             recipe.setChef(this);
@@ -67,8 +68,9 @@ public class Chef extends User
     public void addCuisine(Cuisine cuisine)
     {
         boolean added = cuisines.add(cuisine);
-        if(added)
+        if(added) {
             cuisine.addChef(this);
+        }
     }
 
     @Override
