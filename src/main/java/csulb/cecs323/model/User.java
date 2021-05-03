@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * User is a person using the program, whether it be a regular person or a Food Critic
+ */
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING) //used for SINGLE_TABLE
 @Table(name = "USERS") //USER is a SQL KEYWORD!!

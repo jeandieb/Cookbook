@@ -21,7 +21,7 @@ public class FoodCritic extends User
      */
     @OneToMany(mappedBy = "foodCritic", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
-    
+
     /**
      * Subtotal for number of reviews done by FoodCritic
      */
