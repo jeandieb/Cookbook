@@ -19,19 +19,17 @@ public class RecipeIngredient
 
     private String units;
 
-    @ManyToOne()
-    @PrimaryKeyJoinColumn(name = "RECIPEID", referencedColumnName = "Id")
+ //   @Id
+    @ManyToOne
     private Recipe recipe;
 
-    @ManyToOne()
-    @PrimaryKeyJoinColumn(name = "INGREDIENTID", referencedColumnName = "ID")
+ //   @Id
+    @ManyToOne
     private Ingredient ingredient;
 
     public RecipeIngredient() {}
 
-    public long getRecipeId() {
-        return recipeId;
-    }
+    public long getRecipeId() { return recipeId; }
 
     public void setRecipeId(long recipeId) {
         this.recipeId = recipeId;
