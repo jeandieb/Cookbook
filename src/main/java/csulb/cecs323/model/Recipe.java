@@ -5,12 +5,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "RECIPES")
+@Table(
+        name = "RECIPES",
+        uniqueConstraints =
+            @UniqueConstraint(columnNames = {"name", "chef"})
+)
 public class Recipe
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private long recipeId;
 
     private String name;
 
@@ -156,7 +160,7 @@ public class Recipe
         recipeIngredient.setUnits(units);
         recipeIngredient.setRecipe(this);
         recipeIngredient.setIngredientId(ingredient.getId());
-        recipeIngredient.setRecipeId(this.Id);
+        recipeIngredient.setRecipeId(this.recipeId);
 
         this.ingredients.add(recipeIngredient);
         ingredient.getRecipes().add(recipeIngredient);
