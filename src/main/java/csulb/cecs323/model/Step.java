@@ -20,11 +20,11 @@ public class Step
 
     private int time; // in minutes
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
     /**
      * Connects Steps to Recipe
      */
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Recipe recipe;
 
     /**

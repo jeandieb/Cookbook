@@ -11,9 +11,9 @@ import java.util.Set;
   */
 public class Recipe
 {
+    /** id used to identify recipe */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /** id used to identify recipe */
     private long Id;
     /** recipe name */
     private String name;
@@ -28,25 +28,25 @@ public class Recipe
     /** number of servings recipe makes */
     private int numberOfServings;
 
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
     /** Connects recipe to its steps */
+    @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Step> steps = new HashSet<>();
 
-    @ManyToOne
     /** Connects recipe to its type of cuisine */
+    @ManyToOne
     private Cuisine cuisine;
 
-    @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
     /** Connects recipe to its reviews */
+    @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
 
+    /** Connects recipe to its chef */
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn (nullable = false)
-    /** Connects recipe to its chef */
     private Chef chef;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     /** Connects recipe to its ingredients */
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     private Set<RecipeIngredient> ingredients = new HashSet<>();
 
     /** Empty constructor for recipe */

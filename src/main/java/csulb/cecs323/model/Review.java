@@ -25,33 +25,33 @@ public class Review {
     private float rating;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
     /**
      * Connects Review to a Recipe
      */
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Recipe recipe;
 
 
-    @ManyToOne
-    @JoinColumn (nullable = false)
-      /**
+    /**
      * Connects Review to a FoodCritic
      */
+    @ManyToOne
+    @JoinColumn (nullable = false)
     private FoodCritic foodCritic;
 
+    /**
+     * Connecting one Review to another Review (recursive)
+     */
     @OneToOne
     @JoinColumn(name = "PREVIOUSREVIEW")
-      /**
-     * Connecting one Review to another Review (recursive)
-     */
     private Review previousReview;
 
-    @OneToOne(mappedBy = "previousReview")
-    @JoinColumn(name = "RECENTREVIEW")
-      /**
+    /**
      * Connecting one Review to another Review (recursive)
      */
+      @OneToOne(mappedBy = "previousReview")
+    @JoinColumn(name = "RECENTREVIEW")
     private Review recentReview;
 
       /**
@@ -61,7 +61,7 @@ public class Review {
 
       /**
      * Constructor for creating a Review
-     * @param criticID id of a FoodCritic
+     * @param critic person who is writing a review for the Recipe
      * @param dateCompleted date that Review is done
      * @param rating rating given to the food being reviewed
      * @param description description given to review

@@ -16,11 +16,12 @@ public class FoodCritic extends User
     private String currentPlatform;
 
 
-    @OneToMany(mappedBy = "foodCritic", orphanRemoval = true, cascade = CascadeType.PERSIST)
     /**
      * Connects FoodCritic to all reviews
      */
+    @OneToMany(mappedBy = "foodCritic", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
+    
     /**
      * Subtotal for number of reviews done by FoodCritic
      */
