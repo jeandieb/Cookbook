@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "CUISINES")
+@Table(
+        name = "CUISINES",
+        uniqueConstraints =
+                @UniqueConstraint(columnNames = {"name", "region", "religion"})
+)
 public class Cuisine
 {
     @Id
