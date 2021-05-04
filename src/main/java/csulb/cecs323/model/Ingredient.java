@@ -1,46 +1,43 @@
 package csulb.cecs323.model;
 
 import javax.persistence.*;
-
-import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class Ingredient implements Serializable
+@Table(name = "INGREDIENTS")
+public class Ingredient
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long id;
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     Type type;
 
     private String description;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "INGREDIENT_CUISINE",
             joinColumns = @JoinColumn(name = "ingredientID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "cuisineID", referencedColumnName = "Id"))
-    private List<Cuisine> cuisines;
+    private Set<Cuisine> cuisines = new HashSet<>();
 
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST)
+    private Set<RecipeIngredient> recipeIngredientsList = new HashSet<>();
 
-    //added by Nikki for debugging 
-    public Ingredient(String name, Type type, String description){
-        this.name = name; 
-        this.type = type; 
-        this.description = description; 
+    public Ingredient() {}
+
+    public Ingredient(String name, Type type, String description)
+    {
+        this.setName(name);
+        this.setType(type);
+        this.setDescription(description);
     }
-    public Ingredient() {};
-    //got rid of the constructor to make the user use the .addIngredient method from type
-    //this way we make sure that the List of Ingredients in type is modified everytime we add a new Ingredient
 
-
-    public long getId(){
-        return this.ID;
-    }
     public String getName() {
         return name;
     }
@@ -53,8 +50,10 @@ public class Ingredient implements Serializable
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(Type type)
+    {
         this.type = type;
+        type.addIngredient(this);
     }
 
     public String getDescription() {
@@ -65,7 +64,7 @@ public class Ingredient implements Serializable
         this.description = description;
     }
 
-    public List<Cuisine> getCuisines()
+    public Set<Cuisine> getCuisines()
     {
         return cuisines;
     }
@@ -77,10 +76,18 @@ public class Ingredient implements Serializable
             cuisine.getIngredients().add(this);
     }
 
+    public long getId() {return this.id;}
+
+
+    public Set<RecipeIngredient> getRecipeIngredientsList()
+    {
+        return this.recipeIngredientsList;
+    }
+
     @Override
     public String toString() {
         return "Ingredient{" +
-                "ID=" + ID +
+                "ID=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", description='" + description + '\'' +
