@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "TYPES")
 public class Type
 {
     /** The name of the type of ingredient that will be used for recipes. */
