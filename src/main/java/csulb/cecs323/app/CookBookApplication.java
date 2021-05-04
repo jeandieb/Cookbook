@@ -2,7 +2,7 @@ package csulb.cecs323.app;
 
 import csulb.cecs323.model.*;
 
-import java.util.Scanner;
+import java.util.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,16 +11,11 @@ import javax.persistence.Persistence;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 public class CookBookApplication
 {
     private EntityManager entityManager;
-
     private static final Logger LOGGER = Logger.getLogger(CookBookApplication.class.getName());
 
     public CookBookApplication(EntityManager manager)
@@ -36,7 +31,7 @@ public class CookBookApplication
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
-
+/*
 
         //create ingedients
         tx.begin();
@@ -79,7 +74,7 @@ public class CookBookApplication
         semesterProjectApplication.createReviewEntity();
         tx.commit();
 
-
+*/
 
         runUserApplication();
     }
@@ -280,7 +275,7 @@ public class CookBookApplication
             switch (userChoice)
             {
                 case 1:
-                    //createUserRecipe();
+                    //addRecipe();
                     System.out.println("created User's Recipe");
                     break;
                 case 2:
@@ -321,15 +316,27 @@ public class CookBookApplication
 
     public static int getUserInput()
     {
+        int userChoice = 0;
         Scanner keyboard = new Scanner(System.in);
-        System.out.print("make a selection by typing the appropriate number:");
-        int userChoice = keyboard.nextInt();
-        if(userChoice < 0 || userChoice > 5)
+        try {
+
+            System.out.print("make a selection by typing the appropriate number:");
+            userChoice = keyboard.nextInt();
+            if(userChoice < 0 || userChoice > 5)
+            {
+                System.out.println("invalid option, try again");
+                userChoice = getUserInput();
+            }
+        }catch (InputMismatchException e)
         {
-            System.out.println("invalid option, try again");
-            getUserInput();
+            System.out.println("input has to be an integer!");
+            userChoice = getUserInput();
+        }catch (Exception e)
+        {
+            System.out.println("something went wrong, please try again...");
+            e.printStackTrace();
         }
-        //keyboard.close();
         return userChoice;
     }
+
 }
