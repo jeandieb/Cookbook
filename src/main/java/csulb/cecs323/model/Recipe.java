@@ -29,6 +29,7 @@ public class Recipe
     private int numberOfServings;
 
     @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    //@Embedded
     private Set<Step> steps = new HashSet<>();
 
     @ManyToOne

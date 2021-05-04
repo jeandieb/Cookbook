@@ -3,6 +3,7 @@ package csulb.cecs323.model;
 
 import javax.persistence.*;
 
+//@Embeddable
 @Entity
 @Table(
         name = "STEPS",
