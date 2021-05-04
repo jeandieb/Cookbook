@@ -78,9 +78,11 @@ public class FoodCritic extends User
     }
 
 
-    public void addReview(Review r ){
-        this.review.add(r);
-    }
+
+
+//    public void addReview(Review r ){
+//        this.review.add(r);
+//    }
 
 
     @Override
