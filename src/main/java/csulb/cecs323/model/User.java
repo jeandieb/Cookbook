@@ -17,33 +17,33 @@ public class User implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
 
-    /** The first name of the user. */
+    // The first name of the user.
     private String firstName;
 
-    /** The last name of the user. */
+    // The last name of the user.
     private String lastName;
 
-    /** The username that a user wants to go by. */
+    // The username that a user wants to go by.
     private String userName;
 
-    /** The the password a user registered with. */
+    // The the password a user registered with.
     private String password;
 
-    /** The the email of the user which can be used to contact. */
+    // The the email of the user which can be used to contact.
     @Column(unique = true)
     private String email;
 
-    /** The timestamp of when a user registered. */
+    // The timestamp of when a user registered.
     private LocalDateTime dateRegistered;
 
-    /** A set of followers the current user has. */
+    // A set of followers the current user has.
     @ManyToMany
     @JoinTable(
             name = "FOLLOWER_FOLLOWING"
     )
     private Set<User> followers = new HashSet<>();
 
-    /** A set of users the current user is following. */
+    // A set of users the current user is following.
     @ManyToMany(mappedBy = "followers")
     private Set<User> followings = new HashSet<>();
 
