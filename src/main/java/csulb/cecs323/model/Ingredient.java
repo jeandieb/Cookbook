@@ -25,7 +25,7 @@ public class Ingredient
     private Set<Cuisine> cuisines = new HashSet<>();
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST)
-    private Set<RecipeIngredient> recipes = new HashSet<>();
+    private Set<RecipeIngredient> recipeIngredient = new HashSet<>();
 
     public Ingredient() {}
 
@@ -79,7 +79,7 @@ public class Ingredient
 
     public Set<RecipeIngredient> getRecipes()
     {
-        return this.recipes;
+        return this.recipeIngredient;
     }
 
     @Override
