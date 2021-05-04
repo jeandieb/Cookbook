@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "ingredient_types")
-public class IngredientType
+public class Type
 {
     /** The name of the type of ingredient that will be used for recipes. */
     @Id
@@ -18,9 +17,9 @@ public class IngredientType
     @OneToMany(mappedBy = "type", cascade = CascadeType.PERSIST)
     private Set<Ingredient> ingredients = new HashSet<>();
 
-    public IngredientType() {}
+    public Type() {}
 
-    public IngredientType(String na)
+    public Type(String na)
     {
         setName(na);
     }
@@ -45,7 +44,7 @@ public class IngredientType
     public void addIngredient(Ingredient ingredient) {
         boolean added = this.ingredients.add(ingredient);
         if (added)
-            ingredient.setIngredientType(this);
+            ingredient.setType(this);
     }
 
     @Override
