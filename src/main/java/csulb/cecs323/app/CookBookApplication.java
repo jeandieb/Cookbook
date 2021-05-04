@@ -2,6 +2,8 @@ package csulb.cecs323.app;
 
 import csulb.cecs323.model.*;
 
+import java.util.Scanner;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -15,13 +17,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class StarterApplication
+public class CookBookApplication
 {
     private EntityManager entityManager;
 
-    private static final Logger LOGGER = Logger.getLogger(StarterApplication.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CookBookApplication.class.getName());
 
-    public StarterApplication(EntityManager manager)
+    public CookBookApplication(EntityManager manager)
     {
         this.entityManager = manager;
     }
@@ -30,10 +32,11 @@ public class StarterApplication
         LOGGER.fine("Creating EntityManagerFactory and EntityManager");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("cookbook_entry");
         EntityManager manager = factory.createEntityManager();
-        StarterApplication semesterProjectApplication = new StarterApplication(manager);
+        CookBookApplication semesterProjectApplication = new CookBookApplication(manager);
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
+
 
         //create ingedients
         tx.begin();
@@ -71,6 +74,14 @@ public class StarterApplication
         semesterProjectApplication.createStepEntity();
         tx.commit();
 
+        //create Review
+        tx.begin();
+        semesterProjectApplication.createReviewEntity();
+        tx.commit();
+
+
+
+        runUserApplication();
     }
 
     private void createIngredientEntity()
@@ -190,7 +201,7 @@ public class StarterApplication
         recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
         recipe.setChef(this.entityManager.find(Chef.class, (long) 6));
         recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
-        //recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
+        recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
         this.entityManager.persist(recipe);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
@@ -246,7 +257,7 @@ public class StarterApplication
         Review rev = new Review();
         rev.setDescription("Amazing. Very tasty!");
         rev.setRating(10);
-        rev.setRecipe(entityManager.find(Recipe.class,(long)2));
+        rev.setRecipe(entityManager.find(Recipe.class,(long)1));
         LocalDate date = LocalDate.of(2020, 5, 19);
         rev.setDateCompleted(date);
         FoodCritic temp = new FoodCritic("Foo", "Bar", "Fbar", "56789", "fbar@foob.com", LocalDateTime.now(), "Facebook");
@@ -259,5 +270,66 @@ public class StarterApplication
         LOGGER.info("Persisted object after flush(non-null id): " + rev);
     }
 
+    public static void runUserApplication()
+    {
+        int userChoice = 0;
+        do
+        {
+            printMenu();
+            userChoice = getUserInput();
+            switch (userChoice)
+            {
+                case 1:
+                    //createUserRecipe();
+                    System.out.println("created User's Recipe");
+                    break;
+                case 2:
+                    //updateRecipe();
+                    System.out.println("User update a recipe");
+                    break;
+                case 3:
+                    //removeFoodCritic();
+                    System.out.println("user removed a food critic");
+                    break;
+                case 4:
+                    //removeEntity();
+                    System.out.println("User removed an entity");
+                    break;
+                case 5:
+                    //runQueries();
+                    System.out.println("User executed SQL queries");
+                    break;
+                case 0:
+                    System.out.println("you have chosen to quit the program...\nHave a good day!");
+            }
 
+        }while (userChoice != 0);
+
+
+    }
+
+    public static void printMenu()
+    {
+        System.out.println("Welcome to Cookbook!\n" +
+                "1) Create a new recipe\n" +
+                "2) Update the information in an existing recipe\n" +
+                "3) Delete a food critic\n" +
+                "4) Remove an entity\n" +
+                "5) Execute some SQL queries on the database\n" +
+                "0) Quit the program");
+    }
+
+    public static int getUserInput()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.print("make a selection by typing the appropriate number:");
+        int userChoice = keyboard.nextInt();
+        if(userChoice < 0 || userChoice > 5)
+        {
+            System.out.println("invalid option, try again");
+            getUserInput();
+        }
+        //keyboard.close();
+        return userChoice;
+    }
 }
