@@ -62,8 +62,6 @@ public class Chef extends User
 
     @Override
     public String toString() {
-        return "Chef{" + "name=" + this.getFirstName() + " " + this.getLastName() +
-                " yearsOfExperience=" + yearsOfExperience +
-                '}';
+        return  this.getFirstName() + " " + this.getLastName() + " ID: " + this.getId();
     }
 }

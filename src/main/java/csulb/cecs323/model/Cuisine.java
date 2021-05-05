@@ -108,7 +108,12 @@ public class Cuisine
 
 
     @Override
-    public String toString() {
+    public String toString()
+    {
+        return name + " ID: " + Id;
+    }
+
+    public String toStringDetailed() {
         return "Cuisine{" +
                 "Id=" + Id +
                 ", name='" + name + '\'' +

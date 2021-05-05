@@ -4,10 +4,7 @@ import csulb.cecs323.model.*;
 
 import java.util.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,7 +28,7 @@ public class CookBookApplication
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
-/*
+
 
         //create ingedients
         tx.begin();
@@ -74,9 +71,9 @@ public class CookBookApplication
         semesterProjectApplication.createReviewEntity();
         tx.commit();
 
-*/
 
-        runUserApplication();
+
+        //semesterProjectApplication.runUserApplication();
     }
 
     private void createIngredientEntity()
@@ -265,8 +262,10 @@ public class CookBookApplication
         LOGGER.info("Persisted object after flush(non-null id): " + rev);
     }
 
-    public static void runUserApplication()
+    public void runUserApplication()
     {
+        EntityTransaction tx = entityManager.getTransaction();
+
         int userChoice = 0;
         do
         {
@@ -275,7 +274,9 @@ public class CookBookApplication
             switch (userChoice)
             {
                 case 1:
-                    //addRecipe();
+                  //  tx.begin();
+                   // this.addRecipe();
+                   // tx.commit();
                     System.out.println("created User's Recipe");
                     break;
                 case 2:
@@ -339,4 +340,61 @@ public class CookBookApplication
         return userChoice;
     }
 
+
+    //still being built ...
+    public void addRecipe()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        Recipe recipe = new Recipe();
+        System.out.print("enter the name of your recipe: ");
+        recipe.setName(keyboard.nextLine());
+        System.out.print("enter the description of your recipe: ");
+        recipe.setDescription(keyboard.nextLine());
+        System.out.print("enter preparation time (in minutes): ");
+        recipe.setPrepTime(keyboard.nextLine());
+        System.out.print("enter cook time (in minutes): ");
+        recipe.setCookTime(keyboard.nextLine());
+        System.out.print("enter difficulty rating of you recipe:");
+        recipe.setDifficultyRating(keyboard.nextInt());
+        System.out.print("enter the number of servings of your recipe:");
+        recipe.setNumberOfServings(keyboard.nextInt());
+        //Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
+        char continueWithSteps = ' ';
+        do
+        {
+            System.out.println("Adding a step...");
+            Step addToRecipe = new Step();
+            System.out.print("Enter the step order number: ");
+            addToRecipe.setOrderNumber(keyboard.nextInt());
+            keyboard.nextLine();
+            System.out.println("Enter the step description: ");
+            addToRecipe.setDescription(keyboard.nextLine());
+            System.out.print("How long does the step take? (in minutes): ");
+            addToRecipe.setTime(keyboard.nextInt());
+            System.out.print("add another step? (y/n): ");
+            continueWithSteps = keyboard.next().charAt(0);
+            if(!(continueWithSteps == 'n' || continueWithSteps == 'N' ||continueWithSteps == 'y' ||continueWithSteps == 'Y'))
+            {
+                System.out.println("invalid selection... can't add more steps ... ");
+                continueWithSteps = 'n';
+            }
+        }while(!(continueWithSteps == 'n' || continueWithSteps == 'N'));
+        //recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
+
+        System.out.print("Select the Chef who created this recipe using his ID: ");
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'Chef'", User.class);
+        System.out.println(query.getResultList());
+        recipe.setChef(this.entityManager.find(Chef.class, (long) keyboard.nextInt()));
+
+        System.out.print("Select the Cuisine this recipe belongs to using its ID: ");
+        Query query2 = this.entityManager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
+        System.out.println(query2.getResultList());
+        recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) keyboard.nextInt()));
+
+        recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
+        this.entityManager.persist(recipe);
+        this.entityManager.flush();
+        LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
+
+    }
 }
