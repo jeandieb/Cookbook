@@ -73,7 +73,9 @@ public class CookBookApplication
 
 
 
-        //semesterProjectApplication.runUserApplication();
+        Query query2 = manager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
+        System.out.println(query2.getResultList());
+        semesterProjectApplication.runUserApplication();
     }
 
     private void createIngredientEntity()
@@ -274,9 +276,9 @@ public class CookBookApplication
             switch (userChoice)
             {
                 case 1:
-                  //  tx.begin();
-                   // this.addRecipe();
-                   // tx.commit();
+                    tx.begin();
+                    this.addRecipe();
+                    tx.commit();
                     System.out.println("created User's Recipe");
                     break;
                 case 2:
@@ -341,7 +343,7 @@ public class CookBookApplication
     }
 
 
-    //still being built ...
+    //printing Cuisines list from DB and adding ingredients do not work ...
     public void addRecipe()
     {
         Scanner keyboard = new Scanner(System.in);
@@ -358,7 +360,6 @@ public class CookBookApplication
         recipe.setDifficultyRating(keyboard.nextInt());
         System.out.print("enter the number of servings of your recipe:");
         recipe.setNumberOfServings(keyboard.nextInt());
-        //Recipe recipe = new Recipe("Shawerma", "cooked chicken breast slices wrapped with pita bread", Duration.ofMinutes(60).toString(), Duration.ofMinutes(30).toString(), 3, 4);
         char continueWithSteps = ' ';
         do
         {
@@ -388,10 +389,11 @@ public class CookBookApplication
 
         System.out.print("Select the Cuisine this recipe belongs to using its ID: ");
         Query query2 = this.entityManager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
-        System.out.println(query2.getResultList());
+        //System.out.println(query2.getResultList());
         recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) keyboard.nextInt()));
 
-        recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
+       // recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 2.0, "Tbs");
+
         this.entityManager.persist(recipe);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
