@@ -75,7 +75,9 @@ public class CookBookApplication
 
         Query query2 = manager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
         System.out.println(query2.getResultList());
-        semesterProjectApplication.runUserApplication();
+        query2 = manager.createNativeQuery("SELECT * FROM RECIPES", Recipe.class);
+        System.out.println(query2.getResultList());
+        //semesterProjectApplication.runUserApplication();
     }
 
     private void createIngredientEntity()
@@ -294,8 +296,8 @@ public class CookBookApplication
                     System.out.println("user removed a food critic");
                     break;
                 case 4:
-                    //removeEntity();
-                    System.out.println("User removed an entity");
+                    //removeUser();
+                    System.out.println("User removed a User");
                     break;
                 case 5:
                     //runQueries();
