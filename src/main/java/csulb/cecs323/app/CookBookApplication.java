@@ -72,7 +72,8 @@ public class CookBookApplication
         tx.commit();
 
 
-
+        Query query = manager.createNativeQuery("SELECT * FROM RECIPES", Recipe.class);
+        System.out.println(query.getResultList());
         Query query2 = manager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
         System.out.println(query2.getResultList());
         semesterProjectApplication.runUserApplication();
@@ -282,7 +283,9 @@ public class CookBookApplication
                     System.out.println("created User's Recipe");
                     break;
                 case 2:
-                    //updateRecipe();
+                    tx.begin();
+                    this.updateRecipeTest();
+                    tx.commit();
                     System.out.println("User update a recipe");
                     break;
                 case 3:
@@ -411,5 +414,25 @@ public class CookBookApplication
         Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'FoodCritic'", User.class);
         System.out.println(query.getResultList());
         return keyboard.nextInt();
+    }
+
+    public void updateRecipe(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Select a recipe by name: ");
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE RECIPEID = 1", Recipe.class);
+        System.out.print("1. enter new the description of your recipe: ");
+        System.out.print("2. enter new preparation time (in minutes): ");
+        System.out.print("3. enter new cook time (in minutes): ");
+        System.out.print("4. enter new difficulty rating of you recipe:");
+        System.out.print("5. enter new the number of servings of your recipe:");
+    }
+
+
+
+    public void updateRecipeTest(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Select a recipe by name: ");
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE RECIPEID = 1", Recipe.class);
+        System.out.println(query.getResultList());
     }
 }
