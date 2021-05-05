@@ -286,7 +286,11 @@ public class CookBookApplication
                     System.out.println("User update a recipe");
                     break;
                 case 3:
-                    //removeFoodCritic();
+                    int toBeRemoved = removeFoodCritic();
+                    tx.begin();
+                    FoodCritic toBeRemoved_foodCritic = this.entityManager.find(FoodCritic.class, (long)toBeRemoved);
+                    this.entityManager.remove(toBeRemoved_foodCritic);
+                    tx.commit();
                     System.out.println("user removed a food critic");
                     break;
                 case 4:
@@ -398,5 +402,14 @@ public class CookBookApplication
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
 
+    }
+
+    public int removeFoodCritic()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Select the critic you want to remove using his/her ID: ");
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'FoodCritic'", User.class);
+        System.out.println(query.getResultList());
+        return keyboard.nextInt();
     }
 }

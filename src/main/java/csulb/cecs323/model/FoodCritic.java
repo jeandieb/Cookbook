@@ -79,10 +79,6 @@ public class FoodCritic extends User
 
     @Override
     public String toString() {
-        return "FoodCritic{" +
-                ", currentPlatform='" + currentPlatform + '\'' +
-                ", review=" + reviews +
-                '}';
-
+        return this.getFirstName() + " " + this.getLastName() + " ID: " + this.getId();
     }
 }

@@ -24,7 +24,7 @@ public class Step
 
     private int time; // in minutes
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne//(cascade = CascadeType.PERSIST)
     @JoinColumn(nullable = false)
     /**
      * Connects Steps to Recipe
