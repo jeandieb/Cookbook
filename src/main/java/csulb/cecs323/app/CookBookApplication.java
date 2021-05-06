@@ -452,19 +452,16 @@ public class CookBookApplication
             userChoice = in.nextInt();
             switch(userChoice){
                 case 1:
-                    System.out.print("Enter new description: ");
-                    String newDesc = in.nextLine();
-                    recipe.setDescription(newDesc);
+                    String desc = newDescription();
+                    recipe.setDescription(desc);
                     break;
                 case 2:
-                    System.out.println("Enter new preparation time (in minutes): ");
-                    String newPrepTime = in.next();
-                    recipe.setPrepTime(newPrepTime);
+                    String prep = newPrepTime();
+                    recipe.setDescription(prep);
                     break;
                 case 3:
-                    System.out.println("Enter new cook time (in minutes): ");
-                    String newCookTime = in.next();
-                    recipe.setCookTime(newCookTime);
+                    String cookTime = newCookTime();
+                    recipe.setDescription(cookTime);
                     break;
                 case 4:
                     System.out.println("Enter new difficulty rating of you recipe:");
@@ -486,14 +483,28 @@ public class CookBookApplication
         } while (userChoice != 6);
     }
 
-    
-
-
-
-    public void updateRecipeTest(){
+    public String newDescription(){
         Scanner in = new Scanner(System.in);
-        System.out.println("Select a recipe by name: ");
-        Recipe recipe = this.entityManager.find(Recipe.class, (long) in.nextInt());
-        System.out.println(recipe);
+        String desc = "";
+        System.out.print("Enter new description: ");
+        desc = in.nextLine();
+        return desc;
     }
+
+    public String newPrepTime(){
+        Scanner in = new Scanner(System.in);
+        String prep = "";
+        System.out.print("Enter new prep time: ");
+        prep = in.nextLine();
+        return prep;
+    }
+
+    public String newCookTime(){
+        Scanner in = new Scanner(System.in);
+        String cookTime = "";
+        System.out.print("Enter new cook time: ");
+        cookTime = in.nextLine();
+        return cookTime;
+    }
+
 }
