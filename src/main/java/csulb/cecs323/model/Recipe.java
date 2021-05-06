@@ -167,4 +167,15 @@ public class Recipe
         ingredient.getRecipes().add(recipeIngredient);
     }
 
+
+    @Override
+    public String toString() {
+        return "ID: " + recipeId +
+                 ", " + name + ' ' +
+                ", description: " + description
+                + ", prep time: " + prepTime
+                + ", cook time: " + cookTime
+                + ", difficulty rating: " + difficultyRating
+                + ", number of servings: " + numberOfServings + "\n";
+    }
 }
