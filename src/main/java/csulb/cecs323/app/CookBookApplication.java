@@ -73,11 +73,8 @@ public class CookBookApplication
 
 
 
-        Query query2 = manager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
-        System.out.println(query2.getResultList());
-        query2 = manager.createNativeQuery("SELECT * FROM RECIPES", Recipe.class);
-        System.out.println(query2.getResultList());
-        //semesterProjectApplication.runUserApplication();
+
+        semesterProjectApplication.runUserApplication();
     }
 
     private void createIngredientEntity()
@@ -378,6 +375,7 @@ public class CookBookApplication
             addToRecipe.setDescription(keyboard.nextLine());
             System.out.print("How long does the step take? (in minutes): ");
             addToRecipe.setTime(keyboard.nextInt());
+            recipe.addStep(addToRecipe);
             System.out.print("add another step? (y/n): ");
             continueWithSteps = keyboard.next().charAt(0);
             if(!(continueWithSteps == 'n' || continueWithSteps == 'N' ||continueWithSteps == 'y' ||continueWithSteps == 'Y'))
