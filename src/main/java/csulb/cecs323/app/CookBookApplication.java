@@ -78,7 +78,7 @@ public class CookBookApplication
         System.out.println(query.getResultList());
         System.out.println(query2.getResultList());
 
-        //semesterProjectApplication.runUserApplication();
+        semesterProjectApplication.runUserApplication();
     }
 
     private void createIngredientEntity()
@@ -293,7 +293,9 @@ public class CookBookApplication
                     System.out.println("created User's Recipe");
                     break;
                 case 2:
-                    //updateRecipe();
+                    tx.begin();
+                    this.updateRecipeTest();
+                    tx.commit();
                     System.out.println("User update a recipe");
                     break;
                 case 3:
@@ -425,14 +427,52 @@ public class CookBookApplication
     }
 
     public void updateRecipe(){
+        // User enters a recipe that they want to update currently, does not support substrings, and is
+        // ***case sensitive**
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Select a recipe by name: ");
+//        String recipe_name = in.nextLine();
+        // Prints out what the current recipe contains
+//        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE NAME = ?1", Recipe.class);
+//        query.setParameter(1, recipe_name);
+//        System.out.println(query.getResultList());
         Scanner in = new Scanner(System.in);
-        System.out.println("Select a recipe by name: ");
-        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE RECIPEID = 1", Recipe.class);
-        System.out.print("1. enter new the description of your recipe: ");
-        System.out.print("2. enter new preparation time (in minutes): ");
-        System.out.print("3. enter new cook time (in minutes): ");
-        System.out.print("4. enter new difficulty rating of you recipe:");
-        System.out.print("5. enter new the number of servings of your recipe:");
+        Recipe recipe = this.entityManager.find(Recipe.class, (long) in.nextInt());
+        System.out.println(recipe);
+
+        int userChoice = 0;
+        do{
+            System.out.println("Choose what you want to edit: ");
+            System.out.println("1. Enter new description: ");
+            System.out.println("1. Enter new preparation time (in minutes): ");
+            System.out.println("2. Enter new cook time (in minutes): ");
+            System.out.println("3. Enter new difficulty rating of you recipe:");
+            System.out.println("4. Enter new the number of servings of your recipe:");
+            System.out.println("5. Done");
+            userChoice = in.nextInt();
+            switch(userChoice){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    break;
+
+            }
+
+
+        } while (userChoice != 5);
+
+
+
+
+
     }
 
 
@@ -440,9 +480,7 @@ public class CookBookApplication
     public void updateRecipeTest(){
         Scanner in = new Scanner(System.in);
         System.out.println("Select a recipe by name: ");
-        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE RECIPEID = 1", Recipe.class);
-        System.out.println("Select a recipe by name: ");
-        Query query2 = this.entityManager.createNativeQuery("SELECT * FROM RECIPES", Recipe.class);
-        System.out.println(query2.getResultList());
+        Recipe recipe = this.entityManager.find(Recipe.class, (long) in.nextInt());
+        System.out.println(recipe);
     }
 }
