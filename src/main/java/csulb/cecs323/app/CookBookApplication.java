@@ -72,9 +72,12 @@ public class CookBookApplication
         tx.commit();
 
 
+        System.out.println("trying to remove a Recipe...");
+        tx.begin();
+        manager.remove(manager.find(Recipe.class, (long)1));
+        tx.commit();
 
-
-        semesterProjectApplication.runUserApplication();
+        //semesterProjectApplication.runUserApplication();
     }
 
     private void createIngredientEntity()
@@ -195,7 +198,15 @@ public class CookBookApplication
         recipe.setChef(this.entityManager.find(Chef.class, (long) 6));
         recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
         recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
+
+        Recipe recipe2 = new Recipe("Chicken bok choy", "cooked chicken with bok choy", Duration.ofMinutes(55).toString(), Duration.ofMinutes(55).toString(), 1, 4);
+        recipe2.addStep(new Step(1, "cook the chicken", 4));
+        recipe2.setChef(this.entityManager.find(Chef.class, (long) 5));
+        recipe2.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
+        recipe2.addIngredient(this.entityManager.find(Ingredient.class, (long)2), (float) 1.5, "Tbs");
+
         this.entityManager.persist(recipe);
+        this.entityManager.persist(recipe2);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
 
@@ -281,7 +292,9 @@ public class CookBookApplication
                     System.out.println("created User's Recipe");
                     break;
                 case 2:
-                    //updateRecipe();
+                    tx.begin();
+                    this.updateRecipe();
+                    tx.commit();
                     System.out.println("User update a recipe");
                     break;
                 case 3:
@@ -293,8 +306,12 @@ public class CookBookApplication
                     System.out.println("user removed a food critic");
                     break;
                 case 4:
-                    //removeUser();
-                    System.out.println("User removed a User");
+                    int toBeRemoved_int = removeChef();
+                    tx.begin();
+                    Chef toBeRemoved_chef = this.entityManager.find(Chef.class, (long)toBeRemoved_int);
+                    this.entityManager.remove(toBeRemoved_chef);
+                    tx.commit();
+                    System.out.println("User removed a Chef");
                     break;
                 case 5:
                     //runQueries();
@@ -302,6 +319,8 @@ public class CookBookApplication
                     break;
                 case 0:
                     System.out.println("you have chosen to quit the program...\nHave a good day!");
+                default:
+                    break;
             }
 
         }while (userChoice != 0);
@@ -410,6 +429,100 @@ public class CookBookApplication
         System.out.println("Select the critic you want to remove using his/her ID: ");
         Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'FoodCritic'", User.class);
         System.out.println(query.getResultList());
+        System.out.println("removing a chef will remove all the recipes he created as well as all the steps associated with the recipes!");
         return keyboard.nextInt();
     }
+
+    public void updateRecipe(){
+        // User enters a recipe that they want to update currently, does not support substrings, and is
+        // ***case sensitive**
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Select a recipe by name: ");
+//        String recipe_name = in.nextLine();
+        // Prints out what the current recipe contains
+//        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE NAME = ?1", Recipe.class);
+//        query.setParameter(1, recipe_name);
+//        System.out.println(query.getResultList());
+        Scanner in = new Scanner(System.in);
+        System.out.println("Select a recipe by id: ");
+        Recipe recipe = this.entityManager.find(Recipe.class, (long) in.nextInt());
+        System.out.println(recipe);
+        int userChoice = 0;
+        do{
+            System.out.println("Choose what you want to edit: ");
+            System.out.println("1. Enter new description: ");
+            System.out.println("2. Enter new preparation time (in minutes): ");
+            System.out.println("3. Enter new cook time (in minutes): ");
+            System.out.println("4. Enter new difficulty rating of you recipe:");
+            System.out.println("5. Enter new the number of servings of your recipe:");
+            System.out.println("6. Done");
+            userChoice = in.nextInt();
+            switch(userChoice){
+                case 1:
+                    String desc = newDescription();
+                    recipe.setDescription(desc);
+                    break;
+                case 2:
+                    String prep = newPrepTime();
+                    recipe.setDescription(prep);
+                    break;
+                case 3:
+                    String cookTime = newCookTime();
+                    recipe.setDescription(cookTime);
+                    break;
+                case 4:
+                    System.out.println("Enter new difficulty rating of you recipe:");
+                    int newDifficulty = in.nextInt();
+                    recipe.setDifficultyRating(newDifficulty);
+                    break;
+                case 5:
+                    System.out.println("Enter new the number of servings of your recipe:");
+                    int newServings = in.nextInt();
+                    recipe.setNumberOfServings(newServings);
+                    break;
+                case 6:
+                    userChoice = 6;
+                    break;
+                default:
+                    break;
+
+            }
+        } while (userChoice != 6);
+    }
+
+    public String newDescription(){
+        Scanner in = new Scanner(System.in);
+        String desc = "";
+        System.out.print("Enter new description: ");
+        desc = in.nextLine();
+        return desc;
+    }
+
+    public String newPrepTime(){
+        Scanner in = new Scanner(System.in);
+        String prep = "";
+        System.out.print("Enter new prep time: ");
+        prep = in.nextLine();
+        return prep;
+    }
+
+    public String newCookTime(){
+        Scanner in = new Scanner(System.in);
+        String cookTime = "";
+        System.out.print("Enter new cook time: ");
+        cookTime = in.nextLine();
+        return cookTime;
+    }
+
+    //does not work yet, throws an exception...
+    public int removeChef()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Select the Chef you want to remove using his/her ID: ");
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'Chef'", User.class);
+        System.out.println(query.getResultList());
+        return keyboard.nextInt();
+
+    }
+
 }

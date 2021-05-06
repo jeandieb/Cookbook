@@ -25,26 +25,25 @@ public class Review {
 
     private String description;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
     /**
      * Connects Review to a Recipe
      */
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Recipe recipe;
 
-
-    @ManyToOne
-    @JoinColumn (nullable = false)
-      /**
+    /**
      * Connects Review to a FoodCritic
      */
+    @ManyToOne
+    @JoinColumn (nullable = false)
     private FoodCritic foodCritic;
 
-    @OneToOne
-    @JoinColumn
-      /**
+    /**
      * Connecting one Review to another Review (recursive)
      */
+    @OneToOne
+    @JoinColumn
     private Review previousReview;
 
 

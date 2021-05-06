@@ -11,7 +11,7 @@ public class Chef extends User
 {
     private int yearsOfExperience;
 
-    @OneToMany(mappedBy = "chef")
+    @OneToMany(mappedBy = "chef", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Recipe> recipesCreated = new HashSet<>();
 
     @ManyToMany

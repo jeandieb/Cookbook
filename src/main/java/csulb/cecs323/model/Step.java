@@ -24,11 +24,11 @@ public class Step
 
     private int time; // in minutes
 
-    @ManyToOne//(cascade = CascadeType.PERSIST)
-    @JoinColumn(nullable = false)
     /**
      * Connects Steps to Recipe
      */
+    @ManyToOne//(cascade = CascadeType.PERSIST)
+    @JoinColumn(nullable = false)
     private Recipe recipe;
 
     /**

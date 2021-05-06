@@ -42,8 +42,8 @@ public class Recipe
     @JoinColumn (nullable = false)
     private Chef chef;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
-    private Set<RecipeIngredient> ingredients = new HashSet<>();
+    @OneToMany(mappedBy = "recipe", orphanRemoval = true ,cascade = CascadeType.PERSIST)
+    private Set<RecipeIngredient> recipeIngredients = new HashSet<>();
 
     public Recipe(){}
 
@@ -163,7 +163,7 @@ public class Recipe
         recipeIngredient.setIngredientId(ingredient.getId());
         recipeIngredient.setRecipeId(this.recipeId);
 
-        this.ingredients.add(recipeIngredient);
+        this.recipeIngredients.add(recipeIngredient);
         ingredient.getRecipes().add(recipeIngredient);
     }
 
@@ -171,7 +171,11 @@ public class Recipe
     @Override
     public String toString() {
         return "ID: " + recipeId +
-                 " " + name + ' ' +
-                ", description: " + description;
+                ", " + name + ' ' +
+                ", description: " + description
+                + ", prep time: " + prepTime
+                + ", cook time: " + cookTime
+                + ", difficulty rating: " + difficultyRating
+                + ", number of servings: " + numberOfServings + "\n";
     }
 }

@@ -27,7 +27,7 @@ public class Ingredient
     @JoinTable
     private Set<Cuisine> cuisines = new HashSet<>();
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<RecipeIngredient> recipeIngredient = new HashSet<>();
 
     public Ingredient() {}
