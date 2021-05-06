@@ -444,11 +444,11 @@ public class CookBookApplication
         do{
             System.out.println("Choose what you want to edit: ");
             System.out.println("1. Enter new description: ");
-            System.out.println("1. Enter new preparation time (in minutes): ");
-            System.out.println("2. Enter new cook time (in minutes): ");
-            System.out.println("3. Enter new difficulty rating of you recipe:");
-            System.out.println("4. Enter new the number of servings of your recipe:");
-            System.out.println("5. Done");
+            System.out.println("2. Enter new preparation time (in minutes): ");
+            System.out.println("3. Enter new cook time (in minutes): ");
+            System.out.println("4. Enter new difficulty rating of you recipe:");
+            System.out.println("5. Enter new the number of servings of your recipe:");
+            System.out.println("6. Done");
             userChoice = in.nextInt();
             switch(userChoice){
                 case 1:
@@ -461,13 +461,15 @@ public class CookBookApplication
                     break;
                 case 5:
                     break;
+                case 6:
+                    break;
                 default:
                     break;
 
             }
 
 
-        } while (userChoice != 5);
+        } while (userChoice != 6);
 
 
 
