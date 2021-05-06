@@ -171,7 +171,11 @@ public class Recipe
     @Override
     public String toString() {
         return "ID: " + recipeId +
-                 " " + name + ' ' +
-                ", description: " + description;
+                ", " + name + ' ' +
+                ", description: " + description
+                + ", prep time: " + prepTime
+                + ", cook time: " + cookTime
+                + ", difficulty rating: " + difficultyRating
+                + ", number of servings: " + numberOfServings + "\n";
     }
 }

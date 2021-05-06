@@ -73,10 +73,11 @@ public class CookBookApplication
 
 
 
-        Query query2 = manager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
+        Query query = manager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
+        Query query2 = manager.createNativeQuery("SELECT * FROM RECIPES", Recipe.class);
+        System.out.println(query.getResultList());
         System.out.println(query2.getResultList());
-        query2 = manager.createNativeQuery("SELECT * FROM RECIPES", Recipe.class);
-        System.out.println(query2.getResultList());
+
         //semesterProjectApplication.runUserApplication();
     }
 
@@ -198,7 +199,15 @@ public class CookBookApplication
         recipe.setChef(this.entityManager.find(Chef.class, (long) 6));
         recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
         recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 1.0, "Tbs");
+
+        Recipe recipe2 = new Recipe("Chicken bok choy", "cooked chicken with bok choy", Duration.ofMinutes(55).toString(), Duration.ofMinutes(55).toString(), 1, 4);
+        recipe2.addStep(new Step(1, "cook the chicken", 4));
+        recipe2.setChef(this.entityManager.find(Chef.class, (long) 5));
+        recipe2.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
+        recipe2.addIngredient(this.entityManager.find(Ingredient.class, (long)2), (float) 1.5, "Tbs");
+
         this.entityManager.persist(recipe);
+        this.entityManager.persist(recipe2);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
 
@@ -413,5 +422,27 @@ public class CookBookApplication
         Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'FoodCritic'", User.class);
         System.out.println(query.getResultList());
         return keyboard.nextInt();
+    }
+
+    public void updateRecipe(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Select a recipe by name: ");
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE RECIPEID = 1", Recipe.class);
+        System.out.print("1. enter new the description of your recipe: ");
+        System.out.print("2. enter new preparation time (in minutes): ");
+        System.out.print("3. enter new cook time (in minutes): ");
+        System.out.print("4. enter new difficulty rating of you recipe:");
+        System.out.print("5. enter new the number of servings of your recipe:");
+    }
+
+
+
+    public void updateRecipeTest(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Select a recipe by name: ");
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE RECIPEID = 1", Recipe.class);
+        System.out.println("Select a recipe by name: ");
+        Query query2 = this.entityManager.createNativeQuery("SELECT * FROM RECIPES", Recipe.class);
+        System.out.println(query2.getResultList());
     }
 }
