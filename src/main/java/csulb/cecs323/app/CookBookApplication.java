@@ -294,7 +294,7 @@ public class CookBookApplication
                     break;
                 case 2:
                     tx.begin();
-                    this.updateRecipeTest();
+                    this.updateRecipe();
                     tx.commit();
                     System.out.println("User update a recipe");
                     break;
@@ -437,9 +437,9 @@ public class CookBookApplication
 //        query.setParameter(1, recipe_name);
 //        System.out.println(query.getResultList());
         Scanner in = new Scanner(System.in);
+        System.out.println("Select a recipe by id: ");
         Recipe recipe = this.entityManager.find(Recipe.class, (long) in.nextInt());
         System.out.println(recipe);
-
         int userChoice = 0;
         do{
             System.out.println("Choose what you want to edit: ");
@@ -452,30 +452,41 @@ public class CookBookApplication
             userChoice = in.nextInt();
             switch(userChoice){
                 case 1:
+                    System.out.print("Enter new description: ");
+                    String newDesc = in.nextLine();
+                    recipe.setDescription(newDesc);
                     break;
                 case 2:
+                    System.out.println("Enter new preparation time (in minutes): ");
+                    String newPrepTime = in.next();
+                    recipe.setPrepTime(newPrepTime);
                     break;
                 case 3:
+                    System.out.println("Enter new cook time (in minutes): ");
+                    String newCookTime = in.next();
+                    recipe.setCookTime(newCookTime);
                     break;
                 case 4:
+                    System.out.println("Enter new difficulty rating of you recipe:");
+                    int newDifficulty = in.nextInt();
+                    recipe.setDifficultyRating(newDifficulty);
                     break;
                 case 5:
+                    System.out.println("Enter new the number of servings of your recipe:");
+                    int newServings = in.nextInt();
+                    recipe.setNumberOfServings(newServings);
                     break;
                 case 6:
+                    userChoice = 6;
                     break;
                 default:
                     break;
 
             }
-
-
         } while (userChoice != 6);
-
-
-
-
-
     }
+
+    
 
 
 
