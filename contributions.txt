@@ -3,22 +3,33 @@ Database Project Team 7 Part 1 Contributions
 
 Originally, we divided the classes evenly between all of us. But some had more work than others due to dependencies from the other classes. 
 
+
 Jean Dieb
-- Started and finished Cuisine, Ingredient, Recipe, and Step entity classes and associated creation entity methods in the StarterApplication
-- Helped Kearne to finish Review and FoodCritic entity classes
-- Has the most commits on Github because he is the main one helping to check the others’ work and helps change whatever necessary to make the entities work with each other
-
+* Created Cuisine, Ingredient, Recipe, and Step entity classes and associated creation entity methods in the StarterApplication
+* Helped Kearne to finish Review and FoodCritic entity classes
+* Has the most commits on Github because he is the main person helping to check the others’ work and helps change whatever necessary to make the entities work with each other
 John Quach
-- Created entity classes for User, Chefs, and Experienced_Cuisine_Chefs
-- Created function to persist Users, Chefs, and Experienced_Cuisine_Chefs into the database
-
+* Created entity classes for User, Chefs, and Experienced_Cuisine_Chefs
+* Created functions to persist Users, Chefs, and Experienced_Cuisine_Chefs into the database
 Kearne Permalino
-- Created the Review and FoodCritic entity classes 
-- Created the methods to persist Reviews and FoodCritics to the database
-
+* Created the Review and FoodCritic entity classes 
+* Created the methods to persist Reviews and FoodCritics to the database
 Nikki Benitez
-- Started and completed the IngredientAmount entity classes
-- Started Recipe and Ingredient classes, but were not added due to other dependencies needed. 
+* Started and completed the IngredientAmount entity classes
+* Started Recipe and Ingredient classes
+
+
+GitHub insights of contributions
+Jean - had the most commits since he was the one that put together most of the project, making sure everything was working and making additional changes when needed. He also added more classes and additional functions in already existing entities, and did most of the testing for them as well. He fixed many of the bugs we had in the persistence of the different entities.
+
+
+John - I had already made the three entities and the persistence that I was assigned, but my entities ended up not being used in the most recent release. There was a more complete version of it and we all decided to use the other. I ended up adding what I worked on to a branch anyways and tried to help on what I can
+
+
+Kearne - Created the Review and FoodCritic classes and their associated entity creation methods in the application but was ultimately not used in the v0.5 release because of a better implementation done by Jean. Most of my commits were done while doing the Javadocs of the entity classes.
+
+
+Nikki - Created the IngredientAmount Class and it’s PK file which contributed to most of the commits. Added toString methods, additional attributes and methods to other classes as needed to test the functionality of each class for creating objects and printing to the console. Not as many contributions to this release because my work for the Recipe and Ingredient classes were not committed to my branch as they served no use since more complete, cohesive files were already added to the main branch. 
 
 
 Because Jean did the majority of the work in this part of the project, he deserves 40% of the points. John should get 20%. Kearne should get 20%. Nikki should get 20%.
