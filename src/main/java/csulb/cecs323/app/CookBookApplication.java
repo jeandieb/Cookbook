@@ -24,7 +24,7 @@ public class CookBookApplication
         LOGGER.fine("Creating EntityManagerFactory and EntityManager");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("cookbook_entry");
         EntityManager manager = factory.createEntityManager();
-        CookBookApplication semesterProjectApplication = new CookBookApplication(manager);
+        CookBookApplication cookBookApp = new CookBookApplication(manager);
 
         LOGGER.fine("Begin of Transaction");
         EntityTransaction tx = manager.getTransaction();
@@ -32,43 +32,43 @@ public class CookBookApplication
 
         //create ingedients
         tx.begin();
-        semesterProjectApplication.createIngredientEntity();
+        cookBookApp.createIngredientEntity();
         tx.commit();
 
         //create cuisines
         tx.begin();
-        semesterProjectApplication.createCuisineEntity();
+        cookBookApp.createCuisineEntity();
         tx.commit();
 
         //create users
         tx.begin();
-        semesterProjectApplication.createUserEntity();
+        cookBookApp.createUserEntity();
         tx.commit();
 
         //create chefs and add  followers
         tx.begin();
-        semesterProjectApplication.createChefEntity();
+        cookBookApp.createChefEntity();
         tx.commit();
 
         //create a food critic and add followers
         tx.begin();
-        semesterProjectApplication.createFoodCriticEntity();
+        cookBookApp.createFoodCriticEntity();
         tx.commit();
 
 
         //create recipe
         tx.begin();
-        semesterProjectApplication.createRecipeEntity();
+        cookBookApp.createRecipeEntity();
         tx.commit();
 
         //create Steps
         tx.begin();
-        semesterProjectApplication.createStepEntity();
+        cookBookApp.createStepEntity();
         tx.commit();
 
         //create Review
         tx.begin();
-        semesterProjectApplication.createReviewEntity();
+        cookBookApp.createReviewEntity();
         tx.commit();
 
 
@@ -78,7 +78,7 @@ public class CookBookApplication
 //        manager.remove(manager.find(Recipe.class, (long)1));
 //        tx.commit();
 
-        semesterProjectApplication.runUserApplication();
+        cookBookApp.runUserApplication();
     }
 
     private void createIngredientEntity()
