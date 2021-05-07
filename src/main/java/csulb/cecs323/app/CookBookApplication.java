@@ -72,13 +72,13 @@ public class CookBookApplication
         tx.commit();
 
 
-        //simplified version made for debugging ..
-        System.out.println("trying to remove a Recipe...");
-        tx.begin();
-        manager.remove(manager.find(Recipe.class, (long)1));
-        tx.commit();
+//        //simplified version made for debugging ..
+//        System.out.println("trying to remove a Recipe...");
+//        tx.begin();
+//        manager.remove(manager.find(Recipe.class, (long)1));
+//        tx.commit();
 
-        //semesterProjectApplication.runUserApplication();
+        semesterProjectApplication.runUserApplication();
     }
 
     private void createIngredientEntity()
