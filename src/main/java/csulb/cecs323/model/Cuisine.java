@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "CUISINES")
+@Table(
+        name = "CUISINES",
+        uniqueConstraints =
+                @UniqueConstraint(columnNames = {"name", "region", "religion"})
+)
 public class Cuisine
 {
     @Id
@@ -104,7 +108,12 @@ public class Cuisine
 
 
     @Override
-    public String toString() {
+    public String toString()
+    {
+        return name + " ID: " + Id;
+    }
+
+    public String toStringDetailed() {
         return "Cuisine{" +
                 "Id=" + Id +
                 ", name='" + name + '\'' +

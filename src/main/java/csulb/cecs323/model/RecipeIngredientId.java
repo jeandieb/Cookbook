@@ -44,7 +44,7 @@ public class RecipeIngredientId implements Serializable
 
     /**
     * Checks if object passed is equal to this Recipe Ingredient 
-    * @return true if object is equal to current Recipe Iggredient Object
+    * @return true if object is equal to current Recipe Ingredient Object
     */
     @Override
     public boolean equals(Object object)
@@ -65,4 +65,53 @@ public class RecipeIngredientId implements Serializable
     public int hashCode() {
         return Objects.hash(recipeId, ingredientId);
     }
+
+    //the version that addresses the feedback... does not work yet
+/*
+    private Recipe recipe;
+    private Ingredient ingredient;
+
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public RecipeIngredientId(Recipe recipe, Ingredient ingredient) {
+        this.recipe = recipe;
+        this.ingredient = ingredient;
+    }
+
+    public RecipeIngredientId() {
+    }
+
+
+    *//**
+     * Checks if object passed is equal to this Recipe Ingredient
+     * @return true if object is equal to current Recipe Ingredient Object
+     *//*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecipeIngredientId id = (RecipeIngredientId) o;
+        return recipe.equals(id.recipe) && ingredient.equals(id.ingredient);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(recipe, ingredient);
+    }
+     */
 }

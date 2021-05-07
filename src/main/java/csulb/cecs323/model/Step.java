@@ -3,8 +3,12 @@ package csulb.cecs323.model;
 
 import javax.persistence.*;
 
+//@Embeddable
 @Entity
-@Table(name = "STEPS")
+@Table(
+        name = "STEPS",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"orderNumber", "recipe"})
+)
 /**
  * Step is the direction that the recipe needs for it to be completed
  */
@@ -12,7 +16,7 @@ public class Step
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private long stepId;
 
     private int orderNumber;
 
@@ -23,7 +27,7 @@ public class Step
     /**
      * Connects Steps to Recipe
      */
-    @ManyToOne
+    @ManyToOne//(cascade = CascadeType.PERSIST)
     @JoinColumn(nullable = false)
     private Recipe recipe;
 

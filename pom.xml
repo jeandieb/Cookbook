@@ -63,7 +63,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>csulb.cecs323.app.CookbookApplication</mainClass>
+							<mainClass>csulb.cecs323.app.CookBookApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

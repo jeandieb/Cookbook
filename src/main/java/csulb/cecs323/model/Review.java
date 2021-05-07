@@ -1,17 +1,16 @@
 package csulb.cecs323.model;
 
-import jdk.management.jfr.RecordingInfo;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Date;
-import java.text.DateFormat;
 
 @Entity
-@Table(name = "REVIEWS")
+@Table(
+        name = "REVIEWS",
+        uniqueConstraints =
+                @UniqueConstraint(columnNames = {"recipe", "foodCritic", "description"})
+)
 /**
  * A User posts a Review, which is a post used to document a user's opinion of the recipe
  */
@@ -23,6 +22,7 @@ public class Review {
 
     private LocalDate dateCompleted;
     private float rating;
+
     private String description;
 
     /**
@@ -31,7 +31,6 @@ public class Review {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Recipe recipe;
-
 
     /**
      * Connects Review to a FoodCritic
@@ -44,15 +43,9 @@ public class Review {
      * Connecting one Review to another Review (recursive)
      */
     @OneToOne
-    @JoinColumn(name = "PREVIOUSREVIEW")
+    @JoinColumn
     private Review previousReview;
 
-    /**
-     * Connecting one Review to another Review (recursive)
-     */
-      @OneToOne(mappedBy = "previousReview")
-    @JoinColumn(name = "RECENTREVIEW")
-    private Review recentReview;
 
       /**
      * Default constructor for Review
@@ -61,7 +54,7 @@ public class Review {
 
       /**
      * Constructor for creating a Review
-     * @param critic person who is writing a review for the Recipe
+     * @param Id id of a FoodCritic
      * @param dateCompleted date that Review is done
      * @param rating rating given to the food being reviewed
      * @param description description given to review
@@ -110,19 +103,9 @@ public class Review {
     public void setPreviousReview(Review previousReview)
     {
         this.previousReview = previousReview;
-        previousReview.setRecentReview(this);
     }
 
-    public Review getRecentReview()
-    {
-        return recentReview;
-    }
 
-    public void setRecentReview(Review recentReview)
-    {
-        this.recentReview = recentReview;
-        recentReview.setPreviousReview(this);
-    }
 
     @Override
     public String toString() {

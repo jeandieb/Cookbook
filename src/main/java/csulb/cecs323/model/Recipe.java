@@ -5,62 +5,48 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "RECIPES")
-/**
-  * A recipe is a food created by following a step-by-step instruction with its ingredients.
-  */
+@Table(
+        name = "RECIPES",
+        uniqueConstraints =
+            @UniqueConstraint(columnNames = {"name", "chef"})
+)
 public class Recipe
 {
-    /** id used to identify recipe */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
-    /** recipe name */
+    private long recipeId;
+
     private String name;
-    /** recipe description */
+
     private String description;
-    /** prep time needed for recipe  */
+
     private String prepTime;
-    /** cook time needed for recipe */
+
     private String cookTime;
-    /** recipe difficulty rating */
+
     private int difficultyRating;
-    /** number of servings recipe makes */
+
     private int numberOfServings;
 
-    /** Connects recipe to its steps */
     @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    //@Embedded
     private Set<Step> steps = new HashSet<>();
 
-    /** Connects recipe to its type of cuisine */
     @ManyToOne
     private Cuisine cuisine;
 
-    /** Connects recipe to its reviews */
     @OneToMany (mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<Review> reviews = new HashSet<>();
 
-    /** Connects recipe to its chef */
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn (nullable = false)
     private Chef chef;
 
-    /** Connects recipe to its ingredients */
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
-    private Set<RecipeIngredient> ingredients = new HashSet<>();
+    @OneToMany(mappedBy = "recipe", orphanRemoval = true ,cascade = CascadeType.PERSIST)
+    private Set<RecipeIngredient> recipeIngredients = new HashSet<>();
 
-    /** Empty constructor for recipe */
     public Recipe(){}
-    
-    /**
-     * Constructor for creating a Recipe
-     * @param na name of recipe
-     * @param desc recipe desciption
-     * @param prepT recipe prep time
-     * @param cookT recipe cook time
-     * @param difficultyRating recipe rating of difficulty
-     * @param numberOfServings # of servings recipe makes
-     */
+
     public Recipe(String na, String desc, String prepT, String cookT, int difficultyRating, int numberOfServings)
     {
         this.setName(na);
@@ -175,10 +161,21 @@ public class Recipe
         recipeIngredient.setUnits(units);
         recipeIngredient.setRecipe(this);
         recipeIngredient.setIngredientId(ingredient.getId());
-        recipeIngredient.setRecipeId(this.Id);
+        recipeIngredient.setRecipeId(this.recipeId);
 
-        this.ingredients.add(recipeIngredient);
-        ingredient.getRecipeIngredientsList().add(recipeIngredient);
+        this.recipeIngredients.add(recipeIngredient);
+        ingredient.getRecipes().add(recipeIngredient);
     }
 
+
+    @Override
+    public String toString() {
+        return "ID: " + recipeId +
+                ", " + name + ' ' +
+                ", description: " + description
+                + ", prep time: " + prepTime
+                + ", cook time: " + cookTime
+                + ", difficulty rating: " + difficultyRating
+                + ", number of servings: " + numberOfServings + "\n";
+    }
 }

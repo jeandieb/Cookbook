@@ -5,36 +5,37 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "INGREDIENTS")
+@Table(
+        name = "ingredients",
+        uniqueConstraints =
+            @UniqueConstraint(columnNames = {"name", "type"})
+)
 public class Ingredient
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long ingredientId;
 
     private String name;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    Type type;
+    IngredientType type;
 
     private String description;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "INGREDIENT_CUISINE",
-            joinColumns = @JoinColumn(name = "ingredientID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "cuisineID", referencedColumnName = "Id"))
+    @JoinTable
     private Set<Cuisine> cuisines = new HashSet<>();
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST)
-    private Set<RecipeIngredient> recipeIngredientsList = new HashSet<>();
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private Set<RecipeIngredient> recipeIngredient = new HashSet<>();
 
     public Ingredient() {}
 
-    public Ingredient(String name, Type type, String description)
+    public Ingredient(String name, IngredientType type, String description)
     {
         this.setName(name);
-        this.setType(type);
+        this.setIngredientType(type);
         this.setDescription(description);
     }
 
@@ -46,11 +47,11 @@ public class Ingredient
         this.name = name;
     }
 
-    public Type getType() {
+    public IngredientType getIngredientType() {
         return type;
     }
 
-    public void setType(Type type)
+    public void setIngredientType(IngredientType type)
     {
         this.type = type;
         type.addIngredient(this);
@@ -76,18 +77,18 @@ public class Ingredient
             cuisine.getIngredients().add(this);
     }
 
-    public long getId() {return this.id;}
+    public long getId() {return this.ingredientId;}
 
 
-    public Set<RecipeIngredient> getRecipeIngredientsList()
+    public Set<RecipeIngredient> getRecipes()
     {
-        return this.recipeIngredientsList;
+        return this.recipeIngredient;
     }
 
     @Override
     public String toString() {
         return "Ingredient{" +
-                "ID=" + id +
+                "ID=" + ingredientId +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", description='" + description + '\'' +
