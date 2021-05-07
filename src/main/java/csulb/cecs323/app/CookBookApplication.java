@@ -223,6 +223,8 @@ public class CookBookApplication
         }
 
     }
+
+
     private void creatReligionEntity()
     {
         Set<Religion> religions = new HashSet<>();
@@ -523,6 +525,12 @@ public class CookBookApplication
         Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'Chef'", User.class);
         System.out.println(query.getResultList());
         return keyboard.nextInt();
+
+    }
+
+
+    public void runQueries()
+    {
 
     }
 
