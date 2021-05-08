@@ -72,6 +72,11 @@ public class CookBookApplication
         tx.commit();
 
 
+
+
+
+
+
 //        //simplified version made for debugging ..
 //        System.out.println("trying to remove a Recipe...");
 //        tx.begin();
@@ -317,7 +322,7 @@ public class CookBookApplication
                     System.out.println("User removed a Chef");
                     break;
                 case 5:
-                    //runQueries();
+                    runQueries();
                     System.out.println("User executed SQL queries");
                     break;
                 case 0:
@@ -531,6 +536,95 @@ public class CookBookApplication
 
     public void runQueries()
     {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("1) Print first name and last name of chefs in the database and the cuisines" +
+                " they experts in. " +
+                "\n2) List the recipes, the last names of the chefs who created them, and the number of steps for each recipe " +
+                "\n3) List the pair of users and their followers" +
+                "\n4) Find Users who have more than one follower, their types and how many followers they have");
+        int userChoice = keyboard.nextInt();
+        if(userChoice == 1)
+        {
+            Query query = this.entityManager.createNativeQuery("SELECT FIRSTNAME AS chef_first_name, LASTNAME AS chef_last_name, C.NAME AS cuisine_name\n" +
+                    "FROM CUISINES C inner join CHEF_CUISINE CC on C.ID = CC.CUISINES_ID\n" +
+                    "                inner join USERS U on CC.CHEFS_ID = U.ID\n" +
+                    "WHERE USER_TYPE = 'Chef'");
+
+            List<String[]> queryRows = query.getResultList();
+            System.out.println("chef first name     chef last name     cuisine name");
+            for (int i = 0; i < queryRows.size(); i++)
+            {
+                Object arr[] = queryRows.get(i);
+                for (int j = 0; j < arr.length; j++)
+                {
+                    System.out.print(arr[j].toString() + "               ");
+                }
+                System.out.println();
+            }
+        }
+
+        else if (userChoice == 2)
+        {
+            Query query = this.entityManager.createNativeQuery("SELECT R.NAME, C.LASTNAME, COUNT(S.ORDERNUMBER) AS number_of_steps\n" +
+                    "FROM USERS C INNER JOIN RECIPES R ON C.ID = R.CHEF_ID\n" +
+                    "            INNER JOIN STEPS S on R.RECIPEID = S.RECIPE_RECIPEID\n" +
+                    "GROUP BY R.NAME, C.LASTNAME");
+            List<String[]> queryRows = query.getResultList();
+            System.out.println("Recipe Name           chef last name     number of steps");
+            for (int i = 0; i < queryRows.size(); i++)
+            {
+                Object arr[] = queryRows.get(i);
+                for (int j = 0; j < arr.length; j++)
+                {
+                    System.out.format("%15s", arr[j].toString());
+                }
+                System.out.println();
+            }
+        }
+
+        else if(userChoice == 3)
+        {
+            Query query = this.entityManager.createNativeQuery("SELECT u.FIRSTNAME AS Followed_first_name, u.LASTNAME  AS Followed_last_name, u1.FIRSTNAME AS follower_first_name, u1.LASTNAME AS follower_last_name\n" +
+                    "FROM USERS u1 right OUTER JOIN  FOLLOWER_FOLLOWING FF on u1.ID = FF.FOLLOWERS_ID\n" +
+                    "            right OUTER JOIN USERS u ON u.ID = FF.FOLLOWINGS_ID");
+            List<String[]> queryRows = query.getResultList();
+            System.out.format("%15s%15s%22s%22s", "User First Name", "User last name", "Follower first name", "Follower last name");
+            System.out.println();
+            for (int i = 0; i < queryRows.size(); i++)
+            {
+                Object arr[] = queryRows.get(i);
+                for (int j = 0; j < arr.length; j++)
+                {
+                    if (arr[j] == null) System.out.format("%20s", "No Followers");
+                    else
+                        System.out.format("%15s", arr[j].toString());
+                }
+                System.out.println();
+            }
+
+        }
+
+        else if (userChoice == 4)
+        {
+            Query query = this.entityManager.createNativeQuery("SELECT  u1.FIRSTNAME ,u1.LASTNAME, u1.USER_TYPE, COUNT(FF.Followers_ID) AS number_of_followers\n" +
+                    "FROM USERS u1 INNER JOIN FOLLOWER_FOLLOWING FF on u1.ID = FF.FOLLOWINGS_ID\n" +
+                    "group by u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE\n" +
+                    "HAVING COUNT(FF.Followers_ID) > 1");
+            List<String[]> queryRows = query.getResultList();
+            System.out.format("%15s%15s%15s%22s", "User First Name", "User last name", "User Type", "Number of followers");
+            System.out.println();
+            for (int i = 0; i < queryRows.size(); i++)
+            {
+                Object arr[] = queryRows.get(i);
+                for (int j = 0; j < arr.length; j++)
+                {
+                    if (arr[j] == null) System.out.format("%20s", "No Followers");
+                    else
+                        System.out.format("%15s", arr[j].toString());
+                }
+                System.out.println();
+            }
+        }
 
     }
 

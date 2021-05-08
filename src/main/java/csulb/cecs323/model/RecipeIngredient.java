@@ -22,7 +22,7 @@ public class RecipeIngredient
     @ManyToOne
     private Recipe recipe;
 
-
+//  @Id
     @ManyToOne
     private Ingredient ingredient;
 
