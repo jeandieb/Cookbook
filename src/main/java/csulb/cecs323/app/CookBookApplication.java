@@ -622,13 +622,13 @@ public class CookBookApplication
                             "FROM (\n" +
                             "SELECT USERS.ID AS CHEFID, COUNT(R.RECIPEID)\n" +
                             "FROM USERS INNER JOIN RECIPES R ON USERS.ID = R.CHEF_ID\n" +
-                            "group by USERS.ID\n" +
+                            "GROUP BY USERS.ID\n" +
                             "HAVING COUNT(R.RECIPEID) = (\n" +
                             "SELECT MAX(numRecipes)\n" +
                             "FROM (\n" +
                             "SELECT USERS.ID, COUNT(R.RECIPEID) numRecipes\n" +
                             "FROM USERS INNER JOIN RECIPES R ON USERS.ID = R.CHEF_ID\n"  +
-                            "group by users.id\n" +
+                            "GROUP BY users.id\n" +
                             ") MAXRECIPES)) CHEFWITHMAXRECIPES) AND R2.RATING > 8");
             List<String[]> queryRows = query.getResultList();
             System.out.format("Recipe Id", "Cook Time", "Description", "Difficulty Rating", "Name", "Number of Servings", "Chef Id", "Cuisine Id", "Recipe Rating");
