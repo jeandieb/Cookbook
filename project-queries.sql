@@ -18,11 +18,16 @@ SELECT u.FIRSTNAME AS Followed_first_name, u.LASTNAME AS Followed_last_name, u1.
                      RIGHT OUTER JOIN USERS u ON u.ID = FF.FOLLOWINGS_ID;
 
 
--- Find Users who have more than one follower, their types and how many followers they have
-SELECT u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE, COUNT(FF.Followers_ID) AS number_of_followers
-       FROM USERS u1 INNER JOIN FOLLOWER_FOLLOWING FF ON u1.ID = FF.FOLLOWINGS_ID
-GROUP BY u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE
-HAVING COUNT(FF.Followers_ID) > 1;
+-- Retrieve recipes with more than 1 step
+SELECT recipeid, cooktime, description, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id
+    FROM RECIPES INNER JOIN USERS U ON RECIPES.CHEF_ID = U.ID
+                 INNER JOIN CHEF_CUISINE CC ON U.ID = CC.CHEFS_ID
+WHERE RECIPEID = ANY (SELECT recipe
+                        FROM (SELECT RECIPE_RECIPEID AS recipe, COUNT(RECIPEID) as StepCount
+                                FROM STEPS INNER JOIN RECIPES R ON R.RECIPEID = STEPS.RECIPE_RECIPEID
+                        GROUP BY RECIPE_RECIPEID
+                        HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps
+                     ) AND RECIPES.CUISINE_ID = CC.CUISINES_ID;
 
 
 -- Find recipes rated 8 and higher of the chef who has created the most recipes
@@ -42,7 +47,7 @@ WHERE CHEF_ID = (SELECT CHEFID
                            ) CHEFWITHMAXRECIPES
                 ) AND R2.RATING > 8;
 
-
+-- QUERY 6???
 -- Find the recipe with the minimum number of steps and the chef who created it
 SELECT R.NAME, C.LASTNAME, COUNT(S.ORDERNUMBER) AS number_of_steps
 FROM USERS C INNER JOIN RECIPES R ON C.ID = R.CHEF_ID
