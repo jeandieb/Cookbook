@@ -524,7 +524,7 @@ public class CookBookApplication
                 " they experts in. " +
                 "\n2) List the recipes, the last names of the chefs who created them, and the number of steps for each recipe " +
                 "\n3) List the pair of users and their followers" +
-                "\n4) Find Users who have more than one follower, their types and how many followers they have" +
+                "\n4) Retrieves all recipes that take more than 1 step" +
                 "\n5) Find recipes rated 8 and higher of the chef who has created the most recipes");
         int userChoice = keyboard.nextInt();
         if(userChoice == 1)
