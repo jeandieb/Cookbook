@@ -1,0 +1,64 @@
+Database Project Team 7 Part 1 Contributions
+
+
+Originally, we divided the classes evenly between all of us. But some had more work than others due to dependencies from the other classes. 
+
+Jean Dieb
+- Started and finished Cuisine, Ingredient, Recipe, and Step entity classes and associated creation entity methods in the StarterApplication
+- Helped Kearne to finish Review and FoodCritic entity classes
+- Has the most commits on Github because he is the main one helping to check the others’ work and helps change whatever necessary to make the entities work with each other
+
+John Quach
+- Created entity classes for User, Chefs, and Experienced_Cuisine_Chefs
+- Created function to persist Users, Chefs, and Experienced_Cuisine_Chefs into the database
+
+Kearne Permalino
+- Created the Review and FoodCritic entity classes 
+- Created the methods to persist Reviews and FoodCritics to the database
+
+Nikki Benitez
+- Started and completed the IngredientAmount entity classes
+- Started Recipe and Ingredient classes, but were not added due to other dependencies needed. 
+
+
+Because Jean did the majority of the work in this part of the project, he deserves 40% of the points. John should get 20%. Kearne should get 20%. Nikki should get 20%.
+
+Database Project Team 7 Part 2 Contributions
+
+We each worked on fixing on comments/suggestions given by Dr. Monge from Part 1. Some took on fixing more of the code than others.
+
+Jean Dieb
+    Fixed the transactions of the main application and created most of the methods used in main
+
+John Quach
+    Refactored Type class file into IngredientType and corrected necessary functions
+    Fixed other small errors that were pointed out by Dr. Monge
+    Worked with Jean, Kearne and Nikki to finish the remaining queries needed
+    Worked together on the edit recipe function with Nikki and Kearne
+Kearne Permalino
+    Fixed errors that were given in the feedback from Dr. Monge
+    Worked with John and Nikki to finish the remaining queries needed
+    Fixed overall code and query stylings (capitalizations, etc.)
+    Created and modified the project-queries.sql file
+    Worked together on the edit recipe function with Nikki and John
+Nikki Benitez
+    Worked with John and Kearne to finish the remaining queries needed
+    Worked together on the edit recipe function with John and Kearne
+
+
+GitHub insights of contributions
+Jean - commits were mainly addressing Dr. Monge’s feedback and building the menu and some of the queries.
+
+John - Commits were from fixing code from the suggestions given by Dr. Monge. Made sure every change I made
+did not cause any errors. Worked on the creation of the edit recipe functions as well as helped with some of
+the creations of the queries that were required in the assignment.
+
+Kearne - Most of the commits were fixes on the code from the suggestions given by Dr. Monge. The other
+commits were during collaborations with the other teammates in updating the statements for the
+queries in main, troubleshooting and fixing small errors in code like capitalizations.
+
+Nikki - All commits were through collaboration with others through discord because of initial configuration
+issues. Worked with others to create queries, troubleshoot issues and adding complexity to existing ones.
+
+Because Jean did the majority of the work in this second part of the project, he deserves 40% of the points.
+John should get 20%. Kearne should get 20%. Nikki should get 20%.

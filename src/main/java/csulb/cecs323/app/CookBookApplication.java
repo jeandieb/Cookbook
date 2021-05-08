@@ -526,7 +526,7 @@ public class CookBookApplication
                 "\n3) List the pair of users and their followers" +
                 "\n4) Retrieves all recipes that take more than 1 step" +
                 "\n5) Find recipes rated 8 and higher of the chef who has created the most recipes" +
-                "\n6) List users who have more than one follower, their user_type, and the number of follower they have");
+                "\n6) Find the recipe with minimum number of steps and the chef who created it");
         int userChoice = keyboard.nextInt();
         if(userChoice == 1)
         {
@@ -591,24 +591,27 @@ public class CookBookApplication
 
         else if (userChoice == 4)
         {
-            Query query = this.entityManager.createNativeQuery("SELECT  recipeid, cooktime, description, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id\n" +
-                    "FROM RECIPES inner join USERS U on RECIPES.CHEF_ID = U.ID\n" +
-                    "INNER JOIN CHEF_CUISINE CC on U.ID = CC.CHEFS_ID\n" +
+            Query query = this.entityManager.createNativeQuery("SELECT recipeid, cooktime, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id\n" +
+                    "FROM RECIPES INNER JOIN USERS U ON RECIPES.CHEF_ID = U.ID\n" +
+                    "INNER JOIN CHEF_CUISINE CC ON U.ID = CC.CHEFS_ID\n" +
                     "WHERE RECIPEID = ANY(\n" +
                     "SELECT recipe\n" +
                     "FROM (SELECT RECIPE_RECIPEID AS recipe, COUNT(RECIPEID) as StepCount\n" +
-                    "FROM STEPS INNER JOIN RECIPES R on R.RECIPEID = STEPS.RECIPE_RECIPEID\n" +
+                    "FROM STEPS INNER JOIN RECIPES R ON R.RECIPEID = STEPS.RECIPE_RECIPEID\n" +
                     "GROUP BY RECIPE_RECIPEID\n" +
                     "HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps) AND RECIPES.CUISINE_ID = CC.CUISINES_ID");
             List<String[]> queryRows = query.getResultList();
-            System.out.format("%15s%15s%20s%22s", "Recipe Id", "Cook Time", "Description", "Difficulty, Recipe Name, # of Servings, Prep Time, Chef Id, Cuisinde Id");
+
+            System.out.format("%18s%18s%18s%18s%18s%18s%18s%18s", "Recipe Id", "Cook Time", "Difficulty", "Recipe Name", "# of Servings", "Prep Time", "Chef Id", "Cuisine Id");
             System.out.println();
             for (int i = 0; i < queryRows.size(); i++)
             {
                 Object arr[] = queryRows.get(i);
                 for (int j = 0; j < arr.length; j++)
                 {
+
                         System.out.format("%10s", arr[j].toString());
+
                 }
                 System.out.println();
             }
@@ -617,19 +620,19 @@ public class CookBookApplication
         {
             Query query = this.entityManager.createNativeQuery(
                     "SELECT R.RECIPEID, R.COOKTIME, R.DESCRIPTION, R.DIFFICULTYRATING, R.NAME, R.NUMBEROFSERVINGS, R.PREPTIME, R.CHEF_ID, R.CUISINE_ID, R2.RATING\n" +
-                            "FROM RECIPES R INNER JOIN REVIEWS R2 on R.RECIPEID = R2.RECIPE_RECIPEID\n" +
+                            "FROM RECIPES R INNER JOIN REVIEWS R2 ON R.RECIPEID = R2.RECIPE_RECIPEID\n" +
                             "WHERE CHEF_ID = (\n" +
                             "SELECT CHEFID\n" +
                             "FROM (\n" +
                             "SELECT USERS.ID AS CHEFID, COUNT(R.RECIPEID)\n" +
-                            "FROM USERS inner join RECIPES R on USERS.ID = R.CHEF_ID\n" +
-                            "group by USERS.ID\n" +
+                            "FROM USERS INNER JOIN RECIPES R ON USERS.ID = R.CHEF_ID\n" +
+                            "GROUP BY USERS.ID\n" +
                             "HAVING COUNT(R.RECIPEID) = (\n" +
                             "SELECT MAX(numRecipes)\n" +
                             "FROM (\n" +
                             "SELECT USERS.ID, COUNT(R.RECIPEID) numRecipes\n" +
-                            "FROM USERS inner join RECIPES R on USERS.ID = R.CHEF_ID\n"  +
-                            "group by users.id\n" +
+                            "FROM USERS INNER JOIN RECIPES R ON USERS.ID = R.CHEF_ID\n"  +
+                            "GROUP BY users.id\n" +
                             ") MAXRECIPES)) CHEFWITHMAXRECIPES) AND R2.RATING > 8");
             List<String[]> queryRows = query.getResultList();
             System.out.format("Recipe Id", "Cook Time", "Description", "Difficulty Rating", "Name", "Number of Servings", "Chef Id", "Cuisine Id", "Recipe Rating");
@@ -646,12 +649,18 @@ public class CookBookApplication
         }
         else if (userChoice == 6)
         {
-            Query query = this.entityManager.createNativeQuery("SELECT u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE, COUNT(FF.Followers_ID) AS number_of_followers\n" +
-                    "FROM USERS u1 INNER JOIN FOLLOWER_FOLLOWING FF ON u1.ID = FF.FOLLOWINGS_ID\n" +
-                    "GROUP BY u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE\n" +
-                    "HAVING COUNT(FF.Followers_ID) > 1");
+            Query query = this.entityManager.createNativeQuery("SELECT R.NAME, C.LASTNAME, COUNT(S.ORDERNUMBER) AS number_of_steps\n" +
+                    "FROM USERS C INNER JOIN RECIPES R ON C.ID = R.CHEF_ID\n" +
+                    "             INNER JOIN STEPS S on R.RECIPEID = S.RECIPE_RECIPEID\n" +
+                    "GROUP BY R.NAME, C.LASTNAME\n" +
+                    "HAVING COUNT(S.ORDERNUMBER) = (\n" +
+                    "    SELECT MIN(NUMSTEPS)\n" +
+                    "    FROM\n" +
+                    "        (SELECT COUNT(S2.ORDERNUMBER) NUMSTEPS\n" +
+                    "         FROM RECIPES RS INNER JOIN STEPS S2 on RS.RECIPEID = S2.RECIPE_RECIPEID\n" +
+                    "         group by RS.NAME) MINSTEPS)");
             List<String[]> queryRows = query.getResultList();
-            System.out.format("%15s%15s%15s%22s", "User First Name", "User last name", "User Type", "Number of followers");
+            System.out.format("%15s%15s%15s", "Recipe Name", "Chef last name", "number of steps");
             System.out.println();
             for (int i = 0; i < queryRows.size(); i++)
             {
