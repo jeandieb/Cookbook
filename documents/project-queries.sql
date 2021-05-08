@@ -47,16 +47,15 @@ WHERE CHEF_ID = (SELECT CHEFID
                            ) CHEFWITHMAXRECIPES
                 ) AND R2.RATING > 8;
 
--- QUERY 6???
+
 -- Find the recipe with the minimum number of steps and the chef who created it
 SELECT R.NAME, C.LASTNAME, COUNT(S.ORDERNUMBER) AS number_of_steps
 FROM USERS C INNER JOIN RECIPES R ON C.ID = R.CHEF_ID
              INNER JOIN STEPS S on R.RECIPEID = S.RECIPE_RECIPEID
 GROUP BY R.NAME, C.LASTNAME
-HAVING COUNT(S.ORDERNUMBER) = (
-    SELECT MIN(NUMSTEPS)
-    FROM
-        (SELECT COUNT(S2.ORDERNUMBER) NUMSTEPS
-         FROM RECIPES RS INNER JOIN STEPS S2 on RS.RECIPEID = S2.RECIPE_RECIPEID
-         group by RS.NAME) MINSTEPS);
+HAVING COUNT(S.ORDERNUMBER) = (SELECT MIN(NUMSTEPS)
+                                    FROM (SELECT COUNT(S2.ORDERNUMBER) NUMSTEPS
+                                              FROM RECIPES RS INNER JOIN STEPS S2 on RS.RECIPEID = S2.RECIPE_RECIPEID
+                                          GROUP BY RS.NAME) MINSTEPS
+                              );
 
