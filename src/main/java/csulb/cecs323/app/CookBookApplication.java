@@ -201,8 +201,15 @@ public class CookBookApplication
         recipe2.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
         recipe2.addIngredient(this.entityManager.find(Ingredient.class, (long)2), (float) 1.5, "Tbs");
 
+        Recipe recipe3 = new Recipe("Orange chicken", "fried chicken with orange sauce", Duration.ofMinutes(60).toString(), Duration.ofMinutes(60).toString(), 2, 4);
+        recipe3.addStep(new Step(1, "fry the chicken", 3));
+        recipe3.setChef(this.entityManager.find(Chef.class, (long) 5));
+        recipe3.setCuisine(this.entityManager.find(Cuisine.class, (long) 2));
+        recipe3.addIngredient(this.entityManager.find(Ingredient.class, (long)3), (float) 2.5, "Tbs");
+
         this.entityManager.persist(recipe);
         this.entityManager.persist(recipe2);
+        this.entityManager.persist(recipe3);
         this.entityManager.flush();
         LOGGER.info("Persisted Object after flush (non-null id): " + recipe);
 
@@ -613,6 +620,46 @@ public class CookBookApplication
                 System.out.println();
             }
         }
+        else if (userChoice == 5)
+        {
+            Query query = this.entityManager.createNativeQuery("SELECT  u1.FIRSTNAME ,u1.LASTNAME, u1.USER_TYPE, COUNT(FF.Followers_ID) AS number_of_followers\n" +
+                    "FROM USERS u1 INNER JOIN FOLLOWER_FOLLOWING FF on u1.ID = FF.FOLLOWINGS_ID\n" +
+                    "group by u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE\n" +
+                    "HAVING COUNT(FF.Followers_ID) > 1");
+            List<String[]> queryRows = query.getResultList();
+            System.out.format("%15s%15s%15s%22s", "User First Name", "User last name", "User Type", "Number of followers");
+            System.out.println();
+            for (int i = 0; i < queryRows.size(); i++)
+            {
+                Object arr[] = queryRows.get(i);
+                for (int j = 0; j < arr.length; j++)
+                {
+                    System.out.format("%15s", arr[j].toString());
+                }
+                System.out.println();
+            }
+        }
+        else if (userChoice == 6)
+        {
+            Query query = this.entityManager.createNativeQuery("SELECT  u1.FIRSTNAME ,u1.LASTNAME, u1.USER_TYPE, COUNT(FF.Followers_ID) AS number_of_followers\n" +
+                    "FROM USERS u1 INNER JOIN FOLLOWER_FOLLOWING FF on u1.ID = FF.FOLLOWINGS_ID\n" +
+                    "group by u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE\n" +
+                    "HAVING COUNT(FF.Followers_ID) > 1");
+            List<String[]> queryRows = query.getResultList();
+            System.out.format("%15s%15s%15s%22s", "User First Name", "User last name", "User Type", "Number of followers");
+            System.out.println();
+            for (int i = 0; i < queryRows.size(); i++)
+            {
+                Object arr[] = queryRows.get(i);
+                for (int j = 0; j < arr.length; j++)
+                {
+                    System.out.format("%15s", arr[j].toString());
+                }
+                System.out.println();
+            }
+        }
+
+
 
     }
 
