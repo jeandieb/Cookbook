@@ -25,9 +25,33 @@ GROUP BY u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE
 HAVING COUNT(FF.Followers_ID) > 1;
 
 
--- QUERY 5 DESCRIPTION
+-- Find recipes rated 8 and higher of the chef who has created the most recipes
+SELECT R.RECIPEID, R.COOKTIME, R.DESCRIPTION, R.DIFFICULTYRATING, R.NAME, R.NUMBEROFSERVINGS, R.PREPTIME, R.CHEF_ID, R.CUISINE_ID, R2.RATING
+    FROM RECIPES R INNER JOIN REVIEWS R2 ON R.RECIPEID = R2.RECIPE_RECIPEID
+WHERE CHEF_ID = (SELECT CHEFID
+                     FROM (SELECT USERS.ID AS CHEFID, COUNT(R.RECIPEID)
+                                FROM USERS INNER JOIN RECIPES R ON USERS.ID = R.CHEF_ID
+                           GROUP BY USERS.ID
+                           HAVING COUNT(R.RECIPEID) = (SELECT MAX(numRecipes)
+                                                            FROM (SELECT USERS.ID, COUNT(R.RECIPEID) numRecipes
+                                                                    FROM USERS INNER JOIN RECIPES R ON USERS.ID = R.CHEF_ID
+                                                                  GROUP BY users.id
+                                                                 ) MAXRECIPES
+                                                      )
+
+                           ) CHEFWITHMAXRECIPES
+                ) AND R2.RATING > 8;
 
 
-
--- QUERY 6 DESCRIPTION
+-- Find the recipe with the minimum number of steps and the chef who created it
+SELECT R.NAME, C.LASTNAME, COUNT(S.ORDERNUMBER) AS number_of_steps
+FROM USERS C INNER JOIN RECIPES R ON C.ID = R.CHEF_ID
+             INNER JOIN STEPS S on R.RECIPEID = S.RECIPE_RECIPEID
+GROUP BY R.NAME, C.LASTNAME
+HAVING COUNT(S.ORDERNUMBER) = (
+    SELECT MIN(NUMSTEPS)
+    FROM
+        (SELECT COUNT(S2.ORDERNUMBER) NUMSTEPS
+         FROM RECIPES RS INNER JOIN STEPS S2 on RS.RECIPEID = S2.RECIPE_RECIPEID
+         group by RS.NAME) MINSTEPS);
 
