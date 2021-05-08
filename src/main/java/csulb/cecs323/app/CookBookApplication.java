@@ -590,10 +590,15 @@ public class CookBookApplication
 
         else if (userChoice == 4)
         {
-            Query query = this.entityManager.createNativeQuery("SELECT  u1.FIRSTNAME ,u1.LASTNAME, u1.USER_TYPE, COUNT(FF.Followers_ID) AS number_of_followers\n" +
-                    "FROM USERS u1 INNER JOIN FOLLOWER_FOLLOWING FF ON u1.ID = FF.FOLLOWINGS_ID\n" +
-                    "GROUP BY u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE\n" +
-                    "HAVING COUNT(FF.Followers_ID) > 1");
+            Query query = this.entityManager.createNativeQuery("SELECT  recipeid, cooktime, description, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id\n" +
+                    "FROM RECIPES inner join USERS U on RECIPES.CHEF_ID = U.ID\n" +
+                    "INNER JOIN CHEF_CUISINE CC on U.ID = CC.CHEFS_ID\n" +
+                    "WHERE RECIPEID = ANY(\n" +
+                    "SELECT recipe\n" +
+                    "FROM (SELECT RECIPE_RECIPEID AS recipe, COUNT(RECIPEID) as StepCount\n" +
+                    "FROM STEPS INNER JOIN RECIPES R on R.RECIPEID = STEPS.RECIPE_RECIPEID\n" +
+                    "GROUP BY RECIPE_RECIPEID\n" +
+                    "HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps) AND RECIPES.CUISINE_ID = CC.CUISINES_ID;");
             List<String[]> queryRows = query.getResultList();
             System.out.format("%15s%15s%15s%22s", "User First Name", "User last name", "User Type", "Number of followers");
             System.out.println();
