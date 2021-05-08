@@ -598,9 +598,9 @@ public class CookBookApplication
                     "FROM (SELECT RECIPE_RECIPEID AS recipe, COUNT(RECIPEID) as StepCount\n" +
                     "FROM STEPS INNER JOIN RECIPES R on R.RECIPEID = STEPS.RECIPE_RECIPEID\n" +
                     "GROUP BY RECIPE_RECIPEID\n" +
-                    "HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps) AND RECIPES.CUISINE_ID = CC.CUISINES_ID;");
+                    "HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps) AND RECIPES.CUISINE_ID = CC.CUISINES_ID");
             List<String[]> queryRows = query.getResultList();
-            System.out.format("%15s%15s%15s%22s", "User First Name", "User last name", "User Type", "Number of followers");
+            System.out.format("%15s%15s%15s%22s", "Recipe Id", "Cook Time", "Description", "Difficulty, Recipe Name, # of Servings, Prep Time, Chef Id, Cuisinde Id");
             System.out.println();
             for (int i = 0; i < queryRows.size(); i++)
             {
