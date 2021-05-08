@@ -590,7 +590,7 @@ public class CookBookApplication
 
         else if (userChoice == 4)
         {
-            Query query = this.entityManager.createNativeQuery("SELECT recipeid, cooktime, description, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id\n" +
+            Query query = this.entityManager.createNativeQuery("SELECT recipeid, cooktime, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id\n" +
                     "FROM RECIPES INNER JOIN USERS U ON RECIPES.CHEF_ID = U.ID\n" +
                     "INNER JOIN CHEF_CUISINE CC ON U.ID = CC.CHEFS_ID\n" +
                     "WHERE RECIPEID = ANY(\n" +
@@ -600,14 +600,14 @@ public class CookBookApplication
                     "GROUP BY RECIPE_RECIPEID\n" +
                     "HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps) AND RECIPES.CUISINE_ID = CC.CUISINES_ID");
             List<String[]> queryRows = query.getResultList();
-            System.out.format("%20s%20s%20s%20s", "Recipe Id", "Cook Time", "Description", "Difficulty", "Recipe Name", "# of Servings", "Prep Time", "Chef Id", "Cuisine Id");
+            System.out.format("%18s%18s%18s%18s%18s%18s%18s%18s", "Recipe Id", "Cook Time", "Difficulty", "Recipe Name", "# of Servings", "Prep Time", "Chef Id", "Cuisine Id");
             System.out.println();
             for (int i = 0; i < queryRows.size(); i++)
             {
                 Object arr[] = queryRows.get(i);
                 for (int j = 0; j < arr.length; j++)
                 {
-                        System.out.format("%15s", arr[j].toString());
+                        System.out.format("%17s", arr[j].toString());
                 }
                 System.out.println();
             }
