@@ -30,30 +30,22 @@ public class CookBookApplication
         EntityTransaction tx = manager.getTransaction();
 
 
-        //create ingedients
+        //create ingredients, cuisines, and users
         tx.begin();
         cookBookApp.createIngredientEntity();
-        tx.commit();
-
-        //create cuisines
-        tx.begin();
         cookBookApp.createCuisineEntity();
-        tx.commit();
-
-        //create users
-        tx.begin();
         cookBookApp.createUserEntity();
         tx.commit();
 
-        //create chefs and add  followers
+
+
+
+        //create chefs, food critics and add  followers
         tx.begin();
         cookBookApp.createChefEntity();
-        tx.commit();
-
-        //create a food critic and add followers
-        tx.begin();
         cookBookApp.createFoodCriticEntity();
         tx.commit();
+
 
 
         //create recipe
@@ -61,15 +53,13 @@ public class CookBookApplication
         cookBookApp.createRecipeEntity();
         tx.commit();
 
-        //create Steps
+        //create Steps and reviews
         tx.begin();
         cookBookApp.createStepEntity();
-        tx.commit();
-
-        //create Review
-        tx.begin();
         cookBookApp.createReviewEntity();
         tx.commit();
+
+
 
 
 
