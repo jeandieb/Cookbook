@@ -525,7 +525,8 @@ public class CookBookApplication
                 "\n2) List the recipes, the last names of the chefs who created them, and the number of steps for each recipe " +
                 "\n3) List the pair of users and their followers" +
                 "\n4) Retrieves all recipes that take more than 1 step" +
-                "\n5) Find recipes rated 8 and higher of the chef who has created the most recipes");
+                "\n5) Find recipes rated 8 and higher of the chef who has created the most recipes" +
+                "\n6) List users who have more than one follower, their user_type, and the number of follower they have");
         int userChoice = keyboard.nextInt();
         if(userChoice == 1)
         {
@@ -600,14 +601,14 @@ public class CookBookApplication
                     "GROUP BY RECIPE_RECIPEID\n" +
                     "HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps) AND RECIPES.CUISINE_ID = CC.CUISINES_ID");
             List<String[]> queryRows = query.getResultList();
-            System.out.format("%15s%15s%15s%22s", "Recipe Id", "Cook Time", "Description", "Difficulty, Recipe Name, # of Servings, Prep Time, Chef Id, Cuisinde Id");
+            System.out.format("%15s%15s%20s%22s", "Recipe Id", "Cook Time", "Description", "Difficulty, Recipe Name, # of Servings, Prep Time, Chef Id, Cuisinde Id");
             System.out.println();
             for (int i = 0; i < queryRows.size(); i++)
             {
                 Object arr[] = queryRows.get(i);
                 for (int j = 0; j < arr.length; j++)
                 {
-                        System.out.format("%15s", arr[j].toString());
+                        System.out.format("%10s", arr[j].toString());
                 }
                 System.out.println();
             }
