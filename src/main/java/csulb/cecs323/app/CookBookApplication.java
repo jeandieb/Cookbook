@@ -618,8 +618,6 @@ public class CookBookApplication
                 Object arr[] = queryRows.get(i);
                 for (int j = 0; j < arr.length; j++)
                 {
-                    if (arr[j] == null) System.out.format("%20s", "No Followers");
-                    else
                         System.out.format("%15s", arr[j].toString());
                 }
                 System.out.println();
