@@ -1,1 +1,20 @@
+a) Justification of all Candidate keys: 
+Cuisine: CK: name, region and religion
+we figured that all these attributes are needed to uniquely identify a Cuisine because people following same religion are spread out around the globe. They might have the same name for the cuisine but recipes differ from a region to another. That’s why we need all the attribute. 
+Ingredient: CK: name and type
+Two ingredients might have the same name but are different things, especially that we are considering a cookbook that might hold data from all around the world and potentially users might enter ingredients in different language than English. So type is necessary to ensure uniqueness.
+Recipe: CK: name and chef 
+The name of the recipe and the chef should be enough to uniquely identify a recipe, because it does not make sense for a chef to create two different recipes and name them the same thing. 
+Review: CK: recipe, food critic and description
+It is possible for a food critic to review the same recipe more than once, after some modifications to the recipe or after he tries it again, so the description is required here to identify the review. 
+Step: CK: order number and the recipe
+Both these attributes are needed because all recipes will have a step with order 1 but a recipe should not and cannot have two steps at the same order. 
+User: CK: email
+Email providers do not allow two users to have the same email address, email is enough to uniquely identify a user, decided to introduce a surrogate key because it looks cleaner and is easier to use when referring to a user than his email.
 
+b) Inheritance Strategy: we decided to use Single table inheritance after a failed trial to use table per class. We did not want to use single table in the beginning because we did not like the way the large table looked with so many null values. But table per class caused problems when tried to implement the recursive relationship on user, because chefs and food critics IDs were not in the user table, but in a separate table. So, we rolled back to use a single table for its simplicity. 
+
+c) the only unidirectional relationship we have is the recursive relation in review because we only need to go to the previous review. The other ones are all bidirectional. Most of the OneToMany relationship ships are set to remove orphans before we want the children instances to be removed when the parent classes are removed from the database. But, although we think that we implemented the relationships correctly trying to remove a recipe (starting from chef) is causing a violation of FK constraint when trying to remove its reviews.
+d) justification of aggregation and compositions:
+composition: tried to use embeddables but on the steps class but could not get it to work. So we used a OneToMany with orphan removal, this way the step won’t exist with the recipe and will achieve the goal from composition.
+Aggregation: was used between cuisine and recipe, since recipe can exist even if the cuisine is gone, we set removeOraphans to it default false value. 
