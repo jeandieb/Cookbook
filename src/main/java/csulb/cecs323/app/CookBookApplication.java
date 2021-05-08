@@ -61,18 +61,6 @@ public class CookBookApplication
 
 
 
-
-
-
-
-
-
-//        //simplified version made for debugging ..
-//        System.out.println("trying to remove a Recipe...");
-//        tx.begin();
-//        manager.remove(manager.find(Recipe.class, (long)1));
-//        tx.commit();
-
         cookBookApp.runUserApplication();
     }
 
@@ -332,7 +320,7 @@ public class CookBookApplication
                 "1) Create a new recipe\n" +
                 "2) Update the information in an existing recipe\n" +
                 "3) Delete a food critic\n" +
-                "4) Remove an entity\n" +
+                "4) Remove a Chef(Warning: using this method will cause a violation of FK and stop the program!)\n" +
                 "5) Execute some SQL queries on the database\n" +
                 "0) Quit the program");
     }
@@ -401,7 +389,6 @@ public class CookBookApplication
                 continueWithSteps = 'n';
             }
         }while(!(continueWithSteps == 'n' || continueWithSteps == 'N'));
-        //recipe.addStep(new Step(1, "paste some onion paste on a pita", 2));
 
         System.out.print("Select the Chef who created this recipe using his ID: ");
         Query query = this.entityManager.createNativeQuery("SELECT * FROM USERS WHERE USER_TYPE = 'Chef'", User.class);
@@ -410,7 +397,6 @@ public class CookBookApplication
 
         System.out.print("Select the Cuisine this recipe belongs to using its ID: ");
         Query query2 = this.entityManager.createNativeQuery("SELECT * FROM CUISINES", Cuisine.class);
-        //System.out.println(query2.getResultList());
         recipe.setCuisine(this.entityManager.find(Cuisine.class, (long) keyboard.nextInt()));
 
        // recipe.addIngredient(this.entityManager.find(Ingredient.class, (long)1), (float) 2.0, "Tbs");
@@ -438,9 +424,9 @@ public class CookBookApplication
 //        System.out.println("Select a recipe by name: ");
 //        String recipe_name = in.nextLine();
         // Prints out what the current recipe contains
-//        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES WHERE NAME = ?1", Recipe.class);
-//        query.setParameter(1, recipe_name);
-//        System.out.println(query.getResultList());
+        Query query = this.entityManager.createNativeQuery("SELECT * FROM RECIPES ", Recipe.class);
+       //query.setParameter(1, recipe_name);
+        System.out.println(query.getResultList());
         Scanner in = new Scanner(System.in);
         System.out.println("Select a recipe by id: ");
         Recipe recipe = this.entityManager.find(Recipe.class, (long) in.nextInt());
