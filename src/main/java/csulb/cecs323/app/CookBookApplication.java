@@ -590,17 +590,17 @@ public class CookBookApplication
 
         else if (userChoice == 4)
         {
-            Query query = this.entityManager.createNativeQuery("SELECT  recipeid, cooktime, description, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id\n" +
-                    "FROM RECIPES inner join USERS U on RECIPES.CHEF_ID = U.ID\n" +
-                    "INNER JOIN CHEF_CUISINE CC on U.ID = CC.CHEFS_ID\n" +
+            Query query = this.entityManager.createNativeQuery("SELECT recipeid, cooktime, description, difficultyrating, name, numberofservings, preptime, chef_id, cuisine_id\n" +
+                    "FROM RECIPES INNER JOIN USERS U ON RECIPES.CHEF_ID = U.ID\n" +
+                    "INNER JOIN CHEF_CUISINE CC ON U.ID = CC.CHEFS_ID\n" +
                     "WHERE RECIPEID = ANY(\n" +
                     "SELECT recipe\n" +
                     "FROM (SELECT RECIPE_RECIPEID AS recipe, COUNT(RECIPEID) as StepCount\n" +
-                    "FROM STEPS INNER JOIN RECIPES R on R.RECIPEID = STEPS.RECIPE_RECIPEID\n" +
+                    "FROM STEPS INNER JOIN RECIPES R ON R.RECIPEID = STEPS.RECIPE_RECIPEID\n" +
                     "GROUP BY RECIPE_RECIPEID\n" +
                     "HAVING COUNT(RECIPE_RECIPEID) > 1) AS RecipeSteps) AND RECIPES.CUISINE_ID = CC.CUISINES_ID");
             List<String[]> queryRows = query.getResultList();
-            System.out.format("%15s%15s%15s%22s", "Recipe Id", "Cook Time", "Description", "Difficulty, Recipe Name, # of Servings, Prep Time, Chef Id, Cuisinde Id");
+            System.out.format("%15s%15s%15s%22s", "Recipe Id", "Cook Time", "Description", "Difficulty, Recipe Name, # of Servings, Prep Time, Chef Id, Cuisine Id");
             System.out.println();
             for (int i = 0; i < queryRows.size(); i++)
             {
