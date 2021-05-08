@@ -524,7 +524,8 @@ public class CookBookApplication
                 " they experts in. " +
                 "\n2) List the recipes, the last names of the chefs who created them, and the number of steps for each recipe " +
                 "\n3) List the pair of users and their followers" +
-                "\n4) Find Users who have more than one follower, their types and how many followers they have");
+                "\n4) Find Users who have more than one follower, their types and how many followers they have" +
+                "\n5) Find recipes rated 8 and higher of the chef who has created the most recipes");
         int userChoice = keyboard.nextInt();
         if(userChoice == 1)
         {
@@ -608,12 +609,24 @@ public class CookBookApplication
         }
         else if (userChoice == 5)
         {
-            Query query = this.entityManager.createNativeQuery("SELECT u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE, COUNT(FF.Followers_ID) AS number_of_followers\n" +
-                    "FROM USERS u1 INNER JOIN FOLLOWER_FOLLOWING FF ON u1.ID = FF.FOLLOWINGS_ID\n" +
-                    "GROUP BY u1.FIRSTNAME, u1.LASTNAME, u1.USER_TYPE\n" +
-                    "HAVING COUNT(FF.Followers_ID) > 1");
+            Query query = this.entityManager.createNativeQuery(
+                    "SELECT R.RECIPEID, R.COOKTIME, R.DESCRIPTION, R.DIFFICULTYRATING, R.NAME, R.NUMBEROFSERVINGS, R.PREPTIME, R.CHEF_ID, R.CUISINE_ID, R2.RATING\n" +
+                            "FROM RECIPES R INNER JOIN REVIEWS R2 on R.RECIPEID = R2.RECIPE_RECIPEID\n" +
+                            "WHERE CHEF_ID = (\n" +
+                            "SELECT CHEFID\n" +
+                            "FROM (\n" +
+                            "SELECT USERS.ID AS CHEFID, COUNT(R.RECIPEID)\n" +
+                            "FROM USERS inner join RECIPES R on USERS.ID = R.CHEF_ID\n" +
+                            "group by USERS.ID\n" +
+                            "HAVING COUNT(R.RECIPEID) = (\n" +
+                            "SELECT MAX(numRecipes)\n" +
+                            "FROM (\n" +
+                            "SELECT USERS.ID, COUNT(R.RECIPEID) numRecipes\n" +
+                            "FROM USERS inner join RECIPES R on USERS.ID = R.CHEF_ID\n"  +
+                            "group by users.id\n" +
+                            ") MAXRECIPES)) CHEFWITHMAXRECIPES) AND R2.RATING > 8");
             List<String[]> queryRows = query.getResultList();
-            System.out.format("%15s%15s%15s%22s", "User First Name", "User last name", "User Type", "Number of followers");
+            System.out.format("Recipe Id", "Cook Time", "Description", "Difficulty Rating", "Name", "Number of Servings", "Chef Id", "Cuisine Id", "Recipe Rating");
             System.out.println();
             for (int i = 0; i < queryRows.size(); i++)
             {
